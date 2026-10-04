@@ -1,0 +1,35 @@
+schema: spec-driven
+
+context: |
+  Think Fast: digital Pim Pam Pet party game (a category and a letter fall out of
+  the wheel; players name an example in the category starting with that letter).
+  Stack: single Expo (React Native, TypeScript) app with expo-router, managed with
+  pnpm; targets Android and iOS (store distribution via EAS is a later change).
+  Offline-first: data, fonts, and sounds are bundled; playing requires no network.
+  Languages out of the box: EN, NL, DE, FR (Western Europe focus); fallback to EN.
+  Look and feel is a priority: bold playful party aesthetic, satisfying spin
+  animation, animated feedback, no default-gray UI. Phone-first (passed around or
+  propped on the table).
+  Category data must stay trivially editable; more category lists will be merged over time.
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing
