@@ -34,6 +34,9 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.15",
     "@types/react": "~19.2.2",
+    "@vitest/coverage-v8": "^5.0.3",
+    "lint-staged": "^17.6.0",
+    "simple-git-hooks": "^2.14.0",
     "typescript": "~6.0.3",
     "vitest": "^5.0.3"
   },
@@ -45,7 +48,17 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "format": "biome check --write .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepare": "simple-git-hooks || true"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css}": [
+      "biome check --write"
+    ]
   },
   "private": true
 }

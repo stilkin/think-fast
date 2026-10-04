@@ -26,7 +26,11 @@ pnpm start          # Expo dev server (Expo Go / dev client / emulators)
 pnpm typecheck      # tsc --noEmit
 pnpm lint           # biome check
 pnpm test           # vitest (data contract, i18n completeness, game logic, wheel math)
+pnpm test:coverage  # same suite with per-file coverage
 ```
+
+A pre-commit hook (installed automatically by `pnpm install`) runs Biome on staged
+files and re-stages the fixes; skip it once with `git commit --no-verify`.
 
 Work happens through OpenSpec changes — see CLAUDE.md.
 
