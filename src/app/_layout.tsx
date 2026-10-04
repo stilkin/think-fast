@@ -1,18 +1,51 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import { useFonts } from 'expo-font'
+import { Stack } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
+import { StatusBar } from 'expo-status-bar'
+import { useEffect } from 'react'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { GameProvider, useGame } from '../game/GameState'
+import { palette } from '../ui/theme'
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+SplashScreen.preventAutoHideAsync().catch(() => {})
 
-SplashScreen.preventAutoHideAsync();
+const FONTS = {
+  'Fredoka-Medium': require('../../assets/fonts/fredoka-v17-latin_latin-ext-500.ttf'),
+  'Fredoka-SemiBold': require('../../assets/fonts/fredoka-v17-latin_latin-ext-600.ttf'),
+}
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+function RootNavigator() {
+  const { hydrated } = useGame()
+  const [fontsLoaded] = useFonts(FONTS)
+  const ready = hydrated && fontsLoaded
+
+  useEffect(() => {
+    if (ready) SplashScreen.hideAsync().catch(() => {})
+  }, [ready])
+
+  if (!ready) return null
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
-  );
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: palette.ink },
+        animation: 'fade',
+      }}
+    >
+      <Stack.Screen name="index" />
+      <Stack.Screen name="game" />
+    </Stack>
+  )
+}
+
+export default function RootLayout() {
+  return (
+    <SafeAreaProvider>
+      <GameProvider>
+        <StatusBar style="light" />
+        <RootNavigator />
+      </GameProvider>
+    </SafeAreaProvider>
+  )
 }

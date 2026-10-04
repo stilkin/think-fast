@@ -1,56 +1,71 @@
-# Welcome to your Expo app 👋
+# Think Fast
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Digital Pim Pam Pet: spin the wheel, get a letter and a category, and name something
+that fits — fast. Expo (React Native, TypeScript) app for Android and iOS;
+EN / NL / DE / FR out of the box, fully offline.
 
-## Get started
+## Playing
 
-1. Install dependencies
+Tap the wheel (or wait for the automatic spin after "Next category"). Name something
+in the category that starts with the landed letter.
 
-   ```bash
-   npm install
-   ```
+- **New letter** — stuck? Same category, new letter.
+- **Next category** — new challenge, spins automatically.
+- Letters and categories never repeat until their whole set has been used.
 
-2. Start the app
+The language can be switched anytime via the flag button (top right); sound via the
+speaker button. Both are remembered.
 
-   ```bash
-   npx expo start
-   ```
+## Developing
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Package manager is pnpm; do not use npm/yarn.
 
 ```bash
-npm run reset-project
+pnpm install
+pnpm start          # Expo dev server (Expo Go / dev client / emulators)
+pnpm typecheck      # tsc --noEmit
+pnpm lint           # biome check
+pnpm test           # vitest (data contract, i18n completeness, game logic, wheel math)
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Work happens through OpenSpec changes — see CLAUDE.md.
 
-### Other setup steps
+## Adding categories
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+All categories live in [`src/data/categories.ts`](src/data/categories.ts) — that is the
+only file to edit. Append an entry to `CATEGORIES`:
 
-## Learn more
+```ts
+{
+  id: 'board-games',                 // stable, unique, kebab-case
+  pack: 'gevorderd',                 // 'basis' | 'gevorderd' | 'thematisch'
+  icon: '🎲',                        // emoji for the category card
+  label: {
+    en: 'Board games',
+    nl: 'Bordspellen',
+    de: 'Brettspiele',
+    fr: 'Jeux de société',
+  },
+},
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+- English is the only required label — missing others fall back to English
+  (so a new category can ship NL-only drafts too, and vice versa).
+- Packs tag difficulty/theme. All packs are active; a pack picker may come later.
+- The wheel's letter sets per language (rare initials removed) live in `LETTERS`
+  in the same file.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Then run `pnpm test` — the contract suite in `src/data/categories.test.ts` validates
+the file (unique ids, English label present, known pack, four-language starter set)
+and names any entry that breaks the rules.
 
-## Join the community
+## Sounds and fonts
 
-Join our community of developers creating universal apps.
+`assets/sounds/tick.wav` and `chime.wav` are generated (no external sources):
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+node scripts/gen-sounds.mjs
+```
+
+The display font is [Fredoka](https://fonts.google.com/specimen/Fredoka) (SIL OFL),
+bundled under `assets/fonts/`.

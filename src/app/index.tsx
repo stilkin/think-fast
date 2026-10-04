@@ -1,98 +1,114 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { router, useLocalSearchParams } from 'expo-router'
+import { useEffect } from 'react'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { LANGS, type Lang } from '../data/categories'
+import { useGame } from '../game/GameState'
+import { LANGUAGE_FLAGS, NATIVE_NAMES, stringsFor } from '../i18n/strings'
+import { fonts, palette, radius, shadow, spacing, type } from '../ui/theme'
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+/**
+ * Language screen: shown on first launch and whenever the player opens the
+ * language switcher (game.tsx navigates with ?switch=1). English copy is the
+ * neutral voice until a choice is made.
+ */
+export default function LanguageScreen() {
+  const { lang, setLang } = useGame()
+  const { switch: isSwitcher } = useLocalSearchParams()
+  const openedFromGame = isSwitcher === '1'
+  const insets = useSafeAreaInsets()
+  const s = stringsFor('en')
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
+  // Saved language + cold start: straight to the game (ui-localization spec).
+  useEffect(() => {
+    if (lang && !openedFromGame) router.replace('/game')
+  }, [lang, openedFromGame])
+
+  if (lang && !openedFromGame) return null
+
+  const choose = (next: Lang) => {
+    setLang(next)
+    router.replace('/game')
   }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <View style={[styles.screen, { paddingTop: insets.top + spacing.xl }]}>
+      <Text style={styles.title}>Think Fast!</Text>
+      <Text style={styles.tagline}>{s.tagline}</Text>
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
+      <View style={styles.list}>
+        {LANGS.map((option) => {
+          const selected = option === lang
+          return (
+            <Pressable
+              key={option}
+              accessibilityRole="button"
+              accessibilityLabel={NATIVE_NAMES[option]}
+              onPress={() => choose(option)}
+              style={({ pressed }) => [
+                styles.ticket,
+                selected && styles.ticketSelected,
+                pressed && styles.ticketPressed,
+              ]}
+            >
+              <Text style={styles.flag}>{LANGUAGE_FLAGS[option]}</Text>
+              <Text style={styles.ticketLabel}>{NATIVE_NAMES[option]}</Text>
+            </Pressable>
+          )
+        })}
+      </View>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+    backgroundColor: palette.ink,
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    paddingHorizontal: spacing.l,
+    gap: spacing.l,
   },
   title: {
-    textAlign: 'center',
+    fontFamily: fonts.display,
+    fontSize: type.title,
+    color: palette.cream,
   },
-  code: {
-    textTransform: 'uppercase',
+  tagline: {
+    fontFamily: fonts.text,
+    fontSize: type.tagline,
+    color: palette.cream,
+    opacity: 0.8,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  list: {
+    width: '100%',
+    maxWidth: 360,
+    gap: spacing.m,
+    marginTop: spacing.xl,
   },
-});
+  ticket: {
+    ...shadow,
+    backgroundColor: palette.cream,
+    borderRadius: radius.ticket,
+    paddingVertical: spacing.m,
+    paddingHorizontal: spacing.l,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.m,
+  },
+  ticketSelected: {
+    borderWidth: 3,
+    borderColor: palette.butter,
+  },
+  ticketPressed: {
+    transform: [{ scale: 0.97 }],
+  },
+  flag: {
+    fontSize: 30,
+  },
+  ticketLabel: {
+    fontFamily: fonts.display,
+    fontSize: 22,
+    color: palette.ink,
+  },
+})
