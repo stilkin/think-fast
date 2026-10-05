@@ -28,4 +28,4 @@
 
 ## 6. Integration checks
 
-- [ ] 6.1 Full web-runtime pass: settings flows (packs, kids, timer) + round flows (spin → timer → expiry, early Next, re-spin) + language switch + offline reload, zero console errors; statics green (`pnpm typecheck` / `lint` / `test`); on-device pass for sound audibility and one-handed reach of the new header gear button
+- [x] 6.1 Full web-runtime pass: settings flows (packs, kids, timer) + round flows (spin → timer → expiry, early Next, re-spin) + language switch + offline reload, zero console errors; statics green (`pnpm typecheck` / `lint` / `test`); on-device pass for sound audibility and one-handed reach of the new header gear button
