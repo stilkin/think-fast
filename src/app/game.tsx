@@ -1,4 +1,4 @@
-import { router } from 'expo-router'
+import { router, useFocusEffect } from 'expo-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
@@ -8,6 +8,7 @@ import type { Round } from '../game/engine'
 import { useGame } from '../game/GameState'
 import { challengeSentence, LANGUAGE_FLAGS, stringsFor } from '../i18n/strings'
 import { initSound } from '../sound/sound'
+import { RoundTimer, type RoundTimerHandle } from '../ui/RoundTimer'
 import { fonts, palette, radius, shadow, spacing, type } from '../ui/theme'
 import { Wheel, type WheelHandle } from '../wheel/Wheel'
 
@@ -15,7 +16,15 @@ import { Wheel, type WheelHandle } from '../wheel/Wheel'
 const AUTO_SPIN_DELAY_MS = 450
 
 export default function GameScreen() {
-  const { lang: chosenLang, muted, toggleMuted, engine } = useGame()
+  const {
+    lang: chosenLang,
+    muted,
+    toggleMuted,
+    engine,
+    timerEnabled,
+    timerSeconds,
+    filterVersion,
+  } = useGame()
   // The router only sends us here once a language is chosen; 'en' is the
   // project's fallback while that choice is in flight.
   const lang = chosenLang ?? 'en'
@@ -25,9 +34,16 @@ export default function GameScreen() {
   const [round, setRound] = useState<Round>(engine.current)
   const [landedLetter, setLandedLetter] = useState<string | null>(null)
   const [spinning, setSpinning] = useState(false)
+  const [expired, setExpired] = useState(false)
   const wheelRef = useRef<WheelHandle>(null)
+  const timerRef = useRef<RoundTimerHandle>(null)
 
   const categoryLabel = labelFor(round.category, lang)
+
+  const cancelTimer = useCallback(() => {
+    timerRef.current?.cancel()
+    setExpired(false)
+  }, [])
 
   // Language switch mid-game: wheel rebuilds, letter cycle resets (specs),
   // any landed letter is cleared with the round. `lang` is the trigger.
@@ -35,15 +51,50 @@ export default function GameScreen() {
   useEffect(() => {
     setRound({ ...engine.current })
     setLandedLetter(null)
+    cancelTimer()
   }, [lang, engine])
+
+  // Active-set change while another screen is on top (settings): note it, then
+  // run the fresh round + spin (game-loop spec) when the game regains focus —
+  // never behind the settings screen's back.
+  const pendingRespin = useRef(false)
+  useEffect(() => {
+    if (filterVersion > 0) pendingRespin.current = true
+  }, [filterVersion])
+
+  // The countdown starts when a letter lands (never when the timer is merely
+  // switched on mid-round) and stops when the letter or the timer is gone.
+  const landedBefore = useRef<string | null>(null)
+  useEffect(() => {
+    const isNewLanding = landedLetter !== null && landedLetter !== landedBefore.current
+    if (isNewLanding && timerEnabled) timerRef.current?.start()
+    else if (!landedLetter || !timerEnabled) timerRef.current?.cancel()
+    landedBefore.current = landedLetter
+  }, [landedLetter, timerEnabled])
 
   const drawAndSpin = useCallback(() => {
     if (spinning) return
     initSound()
+    cancelTimer()
     const letter = engine.spin()
     setSpinning(true)
     wheelRef.current?.spinTo(letter)
-  }, [engine, spinning])
+  }, [engine, spinning, cancelTimer])
+
+  // Consumes a pending filter change on return from settings; re-runs after
+  // any in-flight spin settles, so the flag is only cleared once it spins.
+  useFocusEffect(
+    useCallback(() => {
+      if (!pendingRespin.current || spinning) return
+      pendingRespin.current = false
+      setRound({ ...engine.current })
+      setLandedLetter(null)
+      cancelTimer()
+      drawAndSpin()
+    }, [engine, cancelTimer, drawAndSpin, spinning]),
+  )
+
+  const handleTimerExpire = useCallback(() => setExpired(true), [])
 
   const handleLand = useCallback((letter: string) => {
     setLandedLetter(letter)
@@ -52,11 +103,13 @@ export default function GameScreen() {
 
   const handleNext = useCallback(() => {
     if (spinning) return
+    initSound()
+    cancelTimer()
     engine.next()
     setRound({ ...engine.current })
     setLandedLetter(null)
     setTimeout(drawAndSpin, AUTO_SPIN_DELAY_MS)
-  }, [drawAndSpin, engine, spinning])
+  }, [drawAndSpin, engine, spinning, cancelTimer])
 
   // The letter stamp: one orchestrated moment answering the landing.
   const stamp = useSharedValue(0)
@@ -68,12 +121,26 @@ export default function GameScreen() {
     transform: [{ scale: 0.2 + 0.8 * stamp.value }, { rotate: `${-16 + 9 * stamp.value}deg` }],
   }))
 
+  const stampElement = (
+    <Animated.View style={[styles.stamp, stampStyle, expired && styles.stampExpired]}>
+      <Text style={styles.stampLetter}>{landedLetter}</Text>
+    </Animated.View>
+  )
+
   return (
     <SafeAreaView style={styles.screen} edges={['top', 'left', 'right', 'bottom']}>
       {/* header */}
       <View style={[styles.header, { paddingTop: insets.top > 0 ? insets.top : spacing.s }]}>
         <Text style={styles.headerTitle}>Think Fast!</Text>
         <View style={styles.headerActions}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={s.settings}
+            onPress={() => router.push('/settings')}
+            style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
+          >
+            <Text style={styles.iconButtonText}>⚙️</Text>
+          </Pressable>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={s.language}
@@ -105,20 +172,20 @@ export default function GameScreen() {
           {categoryLabel}
         </Text>
         {landedLetter ? (
-          <Animated.View style={[styles.stamp, stampStyle]}>
-            <Text style={styles.stampLetter}>{landedLetter}</Text>
-          </Animated.View>
+          <RoundTimer ref={timerRef} durationMs={timerSeconds * 1000} onExpire={handleTimerExpire}>
+            {stampElement}
+          </RoundTimer>
         ) : (
           <Text style={styles.stampHint}>{s.tapToSpin}</Text>
         )}
       </View>
 
-      {/* the wheel */}
+      {/* the wheel: the only re-spin control since the button's retirement */}
       <View style={styles.wheelWrap}>
         <Wheel
           ref={wheelRef}
           letters={LETTERS[lang]}
-          hubLabel={s.spin}
+          hubLabel={landedLetter ? s.again : s.spin}
           onSpinRequest={drawAndSpin}
           onLand={handleLand}
           disabled={spinning}
@@ -129,15 +196,6 @@ export default function GameScreen() {
       <View
         style={[styles.actions, { paddingBottom: insets.bottom > 0 ? insets.bottom : spacing.m }]}
       >
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={s.respin}
-          disabled={spinning}
-          onPress={drawAndSpin}
-          style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}
-        >
-          <Text style={styles.secondaryButtonText}>{s.respin}</Text>
-        </Pressable>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={s.next}
@@ -197,7 +255,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.m,
-    minHeight: 84,
+    minHeight: 96,
   },
   ticketIcon: {
     fontSize: 34,
@@ -217,6 +275,9 @@ const styles = StyleSheet.create({
     borderColor: palette.ink,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  stampExpired: {
+    backgroundColor: palette.coral,
   },
   stampLetter: {
     fontFamily: fonts.display,
@@ -254,18 +315,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.display,
     fontSize: type.button,
     color: palette.ink,
-  },
-  secondaryButton: {
-    borderColor: palette.cream,
-    borderWidth: 2,
-    borderRadius: radius.button,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  secondaryButtonText: {
-    fontFamily: fonts.display,
-    fontSize: type.button,
-    color: palette.cream,
   },
   pressed: {
     transform: [{ scale: 0.97 }],

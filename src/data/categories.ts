@@ -6,6 +6,7 @@
  *   pack   'basis' | 'gevorderd' | 'thematisch'
  *   icon   emoji shown on the category card
  *   label  one per language; English is required, missing others fall back to it
+ *   kid    optional `kid: true` — playable by ~6-year-olds (drives Kids mode)
  *
  * Run `pnpm test` after editing — the contract suite in categories.test.ts
  * names any entry that breaks the rules.
@@ -22,6 +23,15 @@ export interface Category {
   pack: Pack
   icon: string
   label: Record<Lang, string>
+  /** true when a ~6-year-old can realistically name answers (Kids mode). */
+  kid?: boolean
+}
+
+/** Display names for the packs, localized (settings screen labels). */
+export const PACKS: Record<Pack, Record<Lang, string>> = {
+  basis: { en: 'Basics', nl: 'Basis', de: 'Basis', fr: 'Base' },
+  gevorderd: { en: 'Advanced', nl: 'Gevorderd', de: 'Fortgeschritten', fr: 'Avancé' },
+  thematisch: { en: 'Themes', nl: 'Thematisch', de: 'Themen', fr: 'Thèmes' },
 }
 
 /** Letters the wheel can land on, per language — rare initials removed. */
@@ -37,144 +47,168 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'animals',
     pack: 'basis',
+    kid: true,
     icon: '🐾',
     label: { en: 'Animals', nl: 'Dieren', de: 'Tiere', fr: 'Animaux' },
   },
   {
     id: 'pets',
     pack: 'basis',
+    kid: true,
     icon: '🐶',
     label: { en: 'Pets', nl: 'Huisdieren', de: 'Haustiere', fr: 'Animaux domestiques' },
   },
   {
     id: 'jobs',
     pack: 'basis',
+    kid: true,
     icon: '👷',
     label: { en: 'Jobs', nl: 'Beroepen', de: 'Berufe', fr: 'Métiers' },
   },
   {
     id: 'vegetables',
     pack: 'basis',
+    kid: true,
     icon: '🥕',
     label: { en: 'Vegetables', nl: 'Groenten', de: 'Gemüse', fr: 'Légumes' },
   },
   {
     id: 'fruit',
     pack: 'basis',
+    kid: true,
     icon: '🍎',
     label: { en: 'Fruit', nl: 'Fruit', de: 'Obst', fr: 'Fruits' },
   },
   {
     id: 'cities',
     pack: 'basis',
+    kid: true,
     icon: '🏙️',
     label: { en: 'Cities', nl: 'Steden', de: 'Städte', fr: 'Villes' },
   },
   {
     id: 'countries',
     pack: 'basis',
+    kid: true,
     icon: '🌍',
     label: { en: 'Countries', nl: 'Landen', de: 'Länder', fr: 'Pays' },
   },
   {
     id: 'vehicles',
     pack: 'basis',
+    kid: true,
     icon: '🚗',
     label: { en: 'Vehicles', nl: 'Voertuigen', de: 'Fahrzeuge', fr: 'Véhicules' },
   },
   {
     id: 'furniture',
     pack: 'basis',
+    kid: true,
     icon: '🪑',
     label: { en: 'Furniture', nl: 'Meubels', de: 'Möbel', fr: 'Meubles' },
   },
   {
     id: 'colors',
     pack: 'basis',
+    kid: true,
     icon: '🎨',
     label: { en: 'Colors', nl: 'Kleuren', de: 'Farben', fr: 'Couleurs' },
   },
   {
     id: 'clothing',
     pack: 'basis',
+    kid: true,
     icon: '🧥',
     label: { en: 'Clothing', nl: 'Kleding', de: 'Kleidung', fr: 'Vêtements' },
   },
   {
     id: 'drinks',
     pack: 'basis',
+    kid: true,
     icon: '🥤',
     label: { en: 'Drinks', nl: 'Drankjes', de: 'Getränke', fr: 'Boissons' },
   },
   {
     id: 'flowers',
     pack: 'basis',
+    kid: true,
     icon: '🌷',
     label: { en: 'Flowers', nl: 'Bloemen', de: 'Blumen', fr: 'Fleurs' },
   },
   {
     id: 'birds',
     pack: 'basis',
+    kid: true,
     icon: '🐦',
     label: { en: 'Birds', nl: 'Vogels', de: 'Vögel', fr: 'Oiseaux' },
   },
   {
     id: 'trees',
     pack: 'basis',
+    kid: true,
     icon: '🌳',
     label: { en: 'Trees', nl: 'Bomen', de: 'Bäume', fr: 'Arbres' },
   },
   {
     id: 'insects',
     pack: 'basis',
+    kid: true,
     icon: '🐝',
     label: { en: 'Insects', nl: 'Insecten', de: 'Insekten', fr: 'Insectes' },
   },
   {
     id: 'toys',
     pack: 'basis',
+    kid: true,
     icon: '🧸',
     label: { en: 'Toys', nl: 'Speelgoed', de: 'Spielzeug', fr: 'Jouets' },
   },
   {
     id: 'sports',
     pack: 'basis',
+    kid: true,
     icon: '⚽',
     label: { en: 'Sports', nl: 'Sporten', de: 'Sport', fr: 'Sports' },
   },
   {
     id: 'body-parts',
     pack: 'basis',
+    kid: true,
     icon: '🦶',
     label: { en: 'Body parts', nl: 'Lichaamsdelen', de: 'Körperteile', fr: 'Parties du corps' },
   },
   {
     id: 'food',
     pack: 'basis',
+    kid: true,
     icon: '🍕',
     label: { en: 'Food', nl: 'Eten', de: 'Essen', fr: 'Nourriture' },
   },
   {
     id: 'breakfast',
     pack: 'basis',
+    kid: true,
     icon: '🥣',
     label: { en: 'Breakfast', nl: 'Ontbijt', de: 'Frühstück', fr: 'Petit déjeuner' },
   },
   {
     id: 'boys-names',
     pack: 'basis',
+    kid: true,
     icon: '👦',
     label: { en: "Boys' names", nl: 'Jongensnamen', de: 'Jungennamen', fr: 'Prénoms de garçons' },
   },
   {
     id: 'girls-names',
     pack: 'basis',
+    kid: true,
     icon: '👧',
     label: { en: "Girls' names", nl: 'Meisjesnamen', de: 'Mädchennamen', fr: 'Prénoms de filles' },
   },
   {
     id: 'weather',
     pack: 'basis',
+    kid: true,
     icon: '⛅',
     label: { en: 'Weather', nl: 'Weer', de: 'Wetter', fr: 'Temps' },
   },
@@ -205,12 +239,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'brands',
     pack: 'gevorderd',
+    kid: true,
     icon: '🏷️',
     label: { en: 'Brands', nl: 'Merken', de: 'Marken', fr: 'Marques' },
   },
   {
     id: 'movies',
     pack: 'gevorderd',
+    kid: true,
     icon: '🎬',
     label: { en: 'Movies', nl: 'Films', de: 'Filme', fr: 'Films' },
   },
@@ -229,6 +265,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'car-brands',
     pack: 'gevorderd',
+    kid: true,
     icon: '🚙',
     label: { en: 'Car brands', nl: 'Automerken', de: 'Automarken', fr: 'Marques automobiles' },
   },
@@ -247,12 +284,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'superheroes',
     pack: 'gevorderd',
+    kid: true,
     icon: '🦸',
     label: { en: 'Superheroes', nl: 'Superhelden', de: 'Superhelden', fr: 'Super-héros' },
   },
   {
     id: 'fairy-tales',
     pack: 'gevorderd',
+    kid: true,
     icon: '🧚',
     label: {
       en: 'Fairy-tale characters',
@@ -264,6 +303,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'comics',
     pack: 'gevorderd',
+    kid: true,
     icon: '💥',
     label: {
       en: 'Comic characters',
@@ -275,6 +315,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'instruments',
     pack: 'gevorderd',
+    kid: true,
     icon: '🎻',
     label: {
       en: 'Musical instruments',
@@ -288,6 +329,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'supermarket',
     pack: 'thematisch',
+    kid: true,
     icon: '🛒',
     label: {
       en: 'At the supermarket',
@@ -299,24 +341,28 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'farm',
     pack: 'thematisch',
+    kid: true,
     icon: '🚜',
     label: { en: 'On the farm', nl: 'Op de boerderij', de: 'Auf dem Bauernhof', fr: 'À la ferme' },
   },
   {
     id: 'beach',
     pack: 'thematisch',
+    kid: true,
     icon: '🏖️',
     label: { en: 'At the beach', nl: 'Op het strand', de: 'Am Strand', fr: 'À la plage' },
   },
   {
     id: 'kitchen',
     pack: 'thematisch',
+    kid: true,
     icon: '🍳',
     label: { en: 'In the kitchen', nl: 'In de keuken', de: 'In der Küche', fr: 'Dans la cuisine' },
   },
   {
     id: 'bathroom',
     pack: 'thematisch',
+    kid: true,
     icon: '🛁',
     label: {
       en: 'In the bathroom',
@@ -328,18 +374,21 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'school',
     pack: 'thematisch',
+    kid: true,
     icon: '🏫',
     label: { en: 'At school', nl: 'Op school', de: 'In der Schule', fr: "À l'école" },
   },
   {
     id: 'airport',
     pack: 'thematisch',
+    kid: true,
     icon: '✈️',
     label: { en: 'At the airport', nl: 'Op het vliegveld', de: 'Am Flughafen', fr: "À l'aéroport" },
   },
   {
     id: 'space',
     pack: 'thematisch',
+    kid: true,
     icon: '🚀',
     label: { en: 'In space', nl: 'In de ruimte', de: 'Im Weltall', fr: "Dans l'espace" },
   },
@@ -348,30 +397,35 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'fish',
     pack: 'basis',
+    kid: true,
     icon: '🐟',
     label: { en: 'Fish', nl: 'Vissen', de: 'Fische', fr: 'Poissons' },
   },
   {
     id: 'boats',
     pack: 'basis',
+    kid: true,
     icon: '⛵',
     label: { en: 'Boats', nl: 'Boten', de: 'Boote', fr: 'Bateaux' },
   },
   {
     id: 'candy',
     pack: 'basis',
+    kid: true,
     icon: '🍬',
     label: { en: 'Candy', nl: 'Snoep', de: 'Süßigkeiten', fr: 'Bonbons' },
   },
   {
     id: 'desserts',
     pack: 'basis',
+    kid: true,
     icon: '🍰',
     label: { en: 'Desserts', nl: 'Nagerechten', de: 'Desserts', fr: 'Desserts' },
   },
   {
     id: 'family',
     pack: 'basis',
+    kid: true,
     icon: '👨‍👩‍👧',
     label: {
       en: 'Family members',
@@ -383,6 +437,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'hats',
     pack: 'basis',
+    kid: true,
     icon: '👒',
     label: { en: 'Hats', nl: 'Hoeden', de: 'Hüte', fr: 'Chapeaux' },
   },
@@ -391,6 +446,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'soccer-teams',
     pack: 'gevorderd',
+    kid: true,
     icon: '🥅',
     label: {
       en: 'Soccer teams',
@@ -402,6 +458,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'sports-team-country',
     pack: 'gevorderd',
+    kid: true,
     icon: '🏆',
     label: {
       en: 'Sports teams from your country',
@@ -424,18 +481,21 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'athletes',
     pack: 'gevorderd',
+    kid: true,
     icon: '🏅',
     label: { en: 'Athletes', nl: 'Sporters', de: 'Sportler', fr: 'Sportifs' },
   },
   {
     id: 'sports-terms',
     pack: 'gevorderd',
+    kid: true,
     icon: '🏁',
     label: { en: 'Sports terms', nl: 'Sporttermen', de: 'Sportbegriffe', fr: 'Termes sportifs' },
   },
   {
     id: 'olympic-sports',
     pack: 'gevorderd',
+    kid: true,
     icon: '🥇',
     label: {
       en: 'Olympic sports',
@@ -464,6 +524,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'kids-tv',
     pack: 'gevorderd',
+    kid: true,
     icon: '🧒',
     label: {
       en: "Kids' TV shows",
@@ -475,12 +536,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'cartoons',
     pack: 'gevorderd',
+    kid: true,
     icon: '🐭',
     label: { en: 'Cartoons', nl: 'Tekenfilms', de: 'Zeichentrickfilme', fr: 'Dessins animés' },
   },
   {
     id: 'tv-characters',
     pack: 'gevorderd',
+    kid: true,
     icon: '⭐',
     label: {
       en: 'TV and movie characters',
@@ -492,6 +555,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'disney',
     pack: 'gevorderd',
+    kid: true,
     icon: '🏰',
     label: {
       en: 'Disney characters',
@@ -509,6 +573,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'wizards',
     pack: 'gevorderd',
+    kid: true,
     icon: '🧙',
     label: {
       en: 'Wizards and witches',
@@ -520,12 +585,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'songs',
     pack: 'gevorderd',
+    kid: true,
     icon: '🎵',
     label: { en: 'Songs', nl: 'Liedjes', de: 'Lieder', fr: 'Chansons' },
   },
   {
     id: 'childrens-songs',
     pack: 'gevorderd',
+    kid: true,
     icon: '🎶',
     label: { en: "Children's songs", nl: 'Kinderliedjes', de: 'Kinderlieder', fr: 'Comptines' },
   },
@@ -549,6 +616,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'childrens-books',
     pack: 'gevorderd',
+    kid: true,
     icon: '📖',
     label: {
       en: "Children's books",
@@ -560,12 +628,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'fairy-tale-titles',
     pack: 'gevorderd',
+    kid: true,
     icon: '🪄',
     label: { en: 'Fairy tales', nl: 'Sprookjes', de: 'Märchen', fr: 'Contes de fées' },
   },
   {
     id: 'board-games',
     pack: 'gevorderd',
+    kid: true,
     icon: '🎲',
     label: { en: 'Board games', nl: 'Bordspellen', de: 'Brettspiele', fr: 'Jeux de société' },
   },
@@ -578,12 +648,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'verbs',
     pack: 'gevorderd',
+    kid: true,
     icon: '✍️',
     label: { en: 'Verbs', nl: 'Werkwoorden', de: 'Verben', fr: 'Verbes' },
   },
   {
     id: 'adjectives',
     pack: 'gevorderd',
+    kid: true,
     icon: '📝',
     label: { en: 'Adjectives', nl: 'Bijvoeglijke naamwoorden', de: 'Adjektive', fr: 'Adjectifs' },
   },
@@ -654,6 +726,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'european-countries',
     pack: 'gevorderd',
+    kid: true,
     icon: '🇪🇺',
     label: {
       en: 'European countries',
@@ -740,18 +813,21 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'mammals',
     pack: 'gevorderd',
+    kid: true,
     icon: '🦌',
     label: { en: 'Mammals', nl: 'Zoogdieren', de: 'Säugetiere', fr: 'Mammifères' },
   },
   {
     id: 'predators',
     pack: 'gevorderd',
+    kid: true,
     icon: '🦁',
     label: { en: 'Predators', nl: 'Roofdieren', de: 'Raubtiere', fr: 'Prédateurs' },
   },
   {
     id: 'reptiles',
     pack: 'gevorderd',
+    kid: true,
     icon: '🦎',
     label: {
       en: 'Reptiles and amphibians',
@@ -763,12 +839,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'dog-breeds',
     pack: 'gevorderd',
+    kid: true,
     icon: '🐕',
     label: { en: 'Dog breeds', nl: 'Hondenrassen', de: 'Hunderassen', fr: 'Races de chiens' },
   },
   {
     id: 'animal-sounds',
     pack: 'gevorderd',
+    kid: true,
     icon: '🐮',
     label: { en: 'Animal sounds', nl: 'Dierengeluiden', de: 'Tierlaute', fr: "Cris d'animaux" },
   },
@@ -842,6 +920,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'theme-park',
     pack: 'thematisch',
+    kid: true,
     icon: '🎢',
     label: {
       en: 'At the theme park',
@@ -853,6 +932,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'funfair',
     pack: 'thematisch',
+    kid: true,
     icon: '🎡',
     label: {
       en: 'At the funfair',
@@ -864,6 +944,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'bakery',
     pack: 'thematisch',
+    kid: true,
     icon: '🥐',
     label: { en: 'At the bakery', nl: 'Bij de bakker', de: 'Beim Bäcker', fr: 'À la boulangerie' },
   },
@@ -881,12 +962,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'fastfood',
     pack: 'thematisch',
+    kid: true,
     icon: '🍔',
     label: { en: 'Fast food', nl: 'Fastfood', de: 'Fastfood', fr: 'Fast-food' },
   },
   {
     id: 'pizzeria',
     pack: 'thematisch',
+    kid: true,
     icon: '🍕',
     label: {
       en: 'At the pizzeria',
@@ -898,6 +981,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'restaurant',
     pack: 'thematisch',
+    kid: true,
     icon: '🍽️',
     label: {
       en: 'At the restaurant',
@@ -931,6 +1015,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'toy-store',
     pack: 'thematisch',
+    kid: true,
     icon: '🛍️',
     label: {
       en: 'At the toy store',
@@ -953,12 +1038,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'market',
     pack: 'thematisch',
+    kid: true,
     icon: '🧺',
     label: { en: 'At the market', nl: 'Op de markt', de: 'Auf dem Markt', fr: 'Au marché' },
   },
   {
     id: 'hospital',
     pack: 'thematisch',
+    kid: true,
     icon: '🏥',
     label: {
       en: 'At the hospital',
@@ -970,6 +1057,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'camping',
     pack: 'thematisch',
+    kid: true,
     icon: '⛺',
     label: {
       en: 'At the campsite',
@@ -999,6 +1087,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'living-room',
     pack: 'thematisch',
+    kid: true,
     icon: '🛋️',
     label: {
       en: 'In the living room',
@@ -1010,6 +1099,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'bedroom',
     pack: 'thematisch',
+    kid: true,
     icon: '🛏️',
     label: {
       en: 'In the bedroom',
@@ -1021,24 +1111,28 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'garden',
     pack: 'thematisch',
+    kid: true,
     icon: '🌻',
     label: { en: 'In the garden', nl: 'In de tuin', de: 'Im Garten', fr: 'Au jardin' },
   },
   {
     id: 'underground',
     pack: 'thematisch',
+    kid: true,
     icon: '⛏️',
     label: { en: 'Underground', nl: 'Onder de grond', de: 'Unter der Erde', fr: 'Sous terre' },
   },
   {
     id: 'sea',
     pack: 'thematisch',
+    kid: true,
     icon: '🦀',
     label: { en: 'In the sea', nl: 'In de zee', de: 'Im Meer', fr: 'En mer' },
   },
   {
     id: 'computer',
     pack: 'thematisch',
+    kid: true,
     icon: '💻',
     label: {
       en: 'On the computer',
@@ -1050,6 +1144,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'playground',
     pack: 'thematisch',
+    kid: true,
     icon: '🛝',
     label: {
       en: 'At the playground',
@@ -1061,6 +1156,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'pool',
     pack: 'thematisch',
+    kid: true,
     icon: '🏊',
     label: {
       en: 'At the swimming pool',
@@ -1083,6 +1179,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'pet-shop',
     pack: 'thematisch',
+    kid: true,
     icon: '🐹',
     label: {
       en: 'At the pet shop',
@@ -1105,36 +1202,42 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'winter',
     pack: 'thematisch',
+    kid: true,
     icon: '❄️',
     label: { en: 'In winter', nl: 'In de winter', de: 'Im Winter', fr: 'En hiver' },
   },
   {
     id: 'summer',
     pack: 'thematisch',
+    kid: true,
     icon: '☀️',
     label: { en: 'In summer', nl: 'In de zomer', de: 'Im Sommer', fr: 'En été' },
   },
   {
     id: 'christmas',
     pack: 'thematisch',
+    kid: true,
     icon: '🎄',
     label: { en: 'At Christmas', nl: 'Met kerst', de: 'Zu Weihnachten', fr: 'À Noël' },
   },
   {
     id: 'new-year',
     pack: 'thematisch',
+    kid: true,
     icon: '🎆',
     label: { en: "New Year's Eve", nl: 'Met oud en nieuw', de: 'An Silvester', fr: 'Au Nouvel An' },
   },
   {
     id: 'st-nicholas',
     pack: 'thematisch',
+    kid: true,
     icon: '🎅',
     label: { en: 'St. Nicholas', nl: 'Sinterklaas', de: 'Nikolaus', fr: 'Saint-Nicolas' },
   },
   {
     id: 'carnival',
     pack: 'thematisch',
+    kid: true,
     icon: '🪅',
     label: {
       en: 'At carnival',
@@ -1146,6 +1249,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'birthday',
     pack: 'thematisch',
+    kid: true,
     icon: '🎂',
     label: {
       en: 'At a birthday party',
@@ -1157,6 +1261,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'wedding',
     pack: 'thematisch',
+    kid: true,
     icon: '💒',
     label: {
       en: 'At a wedding',
@@ -1168,12 +1273,14 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'baby',
     pack: 'thematisch',
+    kid: true,
     icon: '🍼',
     label: { en: 'Baby things', nl: 'Babyspullen', de: 'Babyartikel', fr: 'Articles de bébé' },
   },
   {
     id: 'dustbin',
     pack: 'thematisch',
+    kid: true,
     icon: '🗑️',
     label: {
       en: 'In the bin',
@@ -1185,6 +1292,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'round-things',
     pack: 'thematisch',
+    kid: true,
     icon: '⭕',
     label: {
       en: 'Things that are round',
@@ -1196,6 +1304,7 @@ export const CATEGORIES: readonly Category[] = [
   {
     id: 'kids-outside',
     pack: 'thematisch',
+    kid: true,
     icon: '🤸',
     label: {
       en: 'Things kids do outside',

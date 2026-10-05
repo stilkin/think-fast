@@ -83,4 +83,41 @@ describe('GameEngine', () => {
     expect(engine.current.letter).toBeNull()
     expect(engine.current.category).toBe(category)
   })
+
+  it('draws only from the active set after a filter change', () => {
+    const engine = new GameEngine('en', mulberry32(29))
+    const thematic = CATEGORIES.filter((c) => c.pack === 'thematisch')
+    engine.setFilter(thematic)
+    const drawn = [engine.current.category, ...Array.from({ length: 9 }, () => engine.next())]
+    for (const category of drawn) expect(category.pack).toBe('thematisch')
+  })
+
+  it('filters keep the no-repeat cycle over the active set', () => {
+    const engine = new GameEngine('en', mulberry32(31))
+    const kids = CATEGORIES.filter((c) => c.kid)
+    engine.setFilter(kids)
+    const seen = [engine.current.category.id]
+    for (let i = 1; i < kids.length; i++) seen.push(engine.next().id)
+    expect(new Set(seen).size).toBe(kids.length)
+  })
+
+  it('filter change starts a fresh round from the new set', () => {
+    const engine = new GameEngine('en', mulberry32(37))
+    engine.spin()
+    const kids = CATEGORIES.filter((c) => c.kid)
+    engine.setFilter(kids)
+    expect(engine.current.letter).toBeNull()
+    expect(kids).toContain(engine.current.category)
+  })
+
+  it('letter cycle survives a filter change', () => {
+    const engine = new GameEngine('nl', mulberry32(41))
+    engine.setFilter(CATEGORIES.filter((c) => c.pack === 'basis'))
+    engine.spin() // one letter consumed before the filter change
+    engine.setFilter(CATEGORIES.filter((c) => c.kid))
+    const rest = Array.from({ length: LETTERS.nl.length - 1 }, () => engine.spin())
+    // the bag continues: a full sweep still covers every letter exactly once
+    const drawn = new Set(rest)
+    expect(drawn.size).toBe(LETTERS.nl.length - 1)
+  })
 })

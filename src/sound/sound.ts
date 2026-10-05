@@ -2,12 +2,14 @@ import { type AudioPlayer, createAudioPlayer, setAudioModeAsync } from 'expo-aud
 
 /**
  * Tiny facade over expo-audio so the wheel never touches the audio module
- * directly (design D4). The tick and chime are generated WAVs committed
- * under assets/sounds/ — no network, no licensing.
+ * directly (design D4). All sounds are generated WAVs committed under
+ * assets/sounds/ — no network, no licensing.
  */
 
 let tickPlayer: AudioPlayer | null = null
 let chimePlayer: AudioPlayer | null = null
+let tockPlayer: AudioPlayer | null = null
+let buzzerPlayer: AudioPlayer | null = null
 let muted = false
 
 /** Call once at startup (after the first user gesture is fine too). */
@@ -16,11 +18,15 @@ export function initSound(): void {
   try {
     tickPlayer = createAudioPlayer(require('../../assets/sounds/tick.wav'))
     chimePlayer = createAudioPlayer(require('../../assets/sounds/chime.wav'))
+    tockPlayer = createAudioPlayer(require('../../assets/sounds/tock.wav'))
+    buzzerPlayer = createAudioPlayer(require('../../assets/sounds/buzzer.wav'))
     // A party game must be heard even with the iOS silent switch on.
     setAudioModeAsync({ playsInSilentMode: true }).catch(() => {})
   } catch {
     tickPlayer = null
     chimePlayer = null
+    tockPlayer = null
+    buzzerPlayer = null
   }
 }
 
@@ -42,4 +48,16 @@ export function playTick(): void {
 export function playChime(): void {
   if (muted || !chimePlayer) return
   void chimePlayer.seekTo(0).then(() => chimePlayer?.play())
+}
+
+/** Soft clock tick — one per second in the timer's final five. */
+export function playTock(): void {
+  if (muted || !tockPlayer) return
+  void tockPlayer.seekTo(0).then(() => tockPlayer?.play())
+}
+
+/** Low double honk — the countdown expired. */
+export function playBuzzer(): void {
+  if (muted || !buzzerPlayer) return
+  void buzzerPlayer.seekTo(0).then(() => buzzerPlayer?.play())
 }

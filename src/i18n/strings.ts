@@ -9,10 +9,17 @@ export interface Strings {
   category: string
   letter: string
   spin: string
-  respin: string
   next: string
   tapToSpin: string
   saySomething: string // {category} and {letter} placeholders
+  settings: string
+  back: string
+  kidsMode: string
+  kidsModeHint: string
+  packsSection: string
+  timerSection: string
+  timerLength: string
+  again: string
 }
 
 export const STRINGS: Record<Lang, Strings> = {
@@ -24,10 +31,17 @@ export const STRINGS: Record<Lang, Strings> = {
     category: 'Category',
     letter: 'Letter',
     spin: 'SPIN',
-    respin: 'New letter',
     next: 'Next category',
     tapToSpin: 'Tap the wheel!',
     saySomething: 'Name something in {category} starting with {letter}!',
+    settings: 'Settings',
+    back: 'Back',
+    kidsMode: 'Kids mode',
+    kidsModeHint: 'Only keeps the easy categories, perfect for the little ones',
+    packsSection: 'Category packs',
+    timerSection: 'Round timer',
+    timerLength: 'Length',
+    again: 'AGAIN',
   },
   nl: {
     tagline: 'Draai aan het wiel. Zeg het snel.',
@@ -37,10 +51,17 @@ export const STRINGS: Record<Lang, Strings> = {
     category: 'Categorie',
     letter: 'Letter',
     spin: 'DRAAI',
-    respin: 'Nieuwe letter',
     next: 'Volgende categorie',
     tapToSpin: 'Tik op het wiel!',
     saySomething: 'Noem iets bij {category} dat begint met {letter}!',
+    settings: 'Instellingen',
+    back: 'Terug',
+    kidsMode: 'Kindermodus',
+    kidsModeHint: 'Speelt alleen met makkelijke categorieën, ideaal voor de kleintjes',
+    packsSection: 'Categoriepakketten',
+    timerSection: 'Rondetimer',
+    timerLength: 'Duur',
+    again: 'OPNIEUW',
   },
   de: {
     tagline: 'Drehe am Rad. Sag es schnell.',
@@ -50,10 +71,17 @@ export const STRINGS: Record<Lang, Strings> = {
     category: 'Kategorie',
     letter: 'Buchstabe',
     spin: 'DREH',
-    respin: 'Neuer Buchstabe',
     next: 'Nächste Kategorie',
     tapToSpin: 'Tippe auf das Rad!',
     saySomething: 'Nenne etwas aus {category}, das mit {letter} beginnt!',
+    settings: 'Einstellungen',
+    back: 'Zurück',
+    kidsMode: 'Kindermodus',
+    kidsModeHint: 'Spielt nur mit leichten Kategorien, ideal für die Kleinen',
+    packsSection: 'Kategoriepakete',
+    timerSection: 'Runden-Timer',
+    timerLength: 'Dauer',
+    again: 'NOCHMAL',
   },
   fr: {
     tagline: 'Fais tourner la roue. Dis-le vite.',
@@ -63,10 +91,17 @@ export const STRINGS: Record<Lang, Strings> = {
     category: 'Catégorie',
     letter: 'Lettre',
     spin: 'TOURNE',
-    respin: 'Nouvelle lettre',
     next: 'Catégorie suivante',
     tapToSpin: 'Touche la roue !',
     saySomething: 'Nomme quelque chose dans {category} qui commence par {letter} !',
+    settings: 'Réglages',
+    back: 'Retour',
+    kidsMode: 'Mode enfants',
+    kidsModeHint: 'Ne garde que les catégories faciles, idéal pour les petits',
+    packsSection: 'Packs de catégories',
+    timerSection: 'Minuteur du tour',
+    timerLength: 'Durée',
+    again: 'ENCORE',
   },
 }
 

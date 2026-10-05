@@ -50,18 +50,21 @@ only file to edit. Append an entry to `CATEGORIES`:
     de: 'Brettspiele',
     fr: 'Jeux de société',
   },
+  kid: true,                        // optional: playable by ~6-year-olds
 },
 ```
 
 - English is the only required label — missing others fall back to English
   (so a new category can ship NL-only drafts too, and vice versa).
-- Packs tag difficulty/theme. All packs are active; a pack picker may come later.
+- Packs tag difficulty/theme; players toggle them in settings, and Kids mode
+  narrows draws to `kid: true` entries (the suite keeps that set ≥ 90).
 - The wheel's letter sets per language (rare initials removed) live in `LETTERS`
   in the same file.
 
 Then run `pnpm test` — the contract suite in `src/data/categories.test.ts` validates
-the file (unique ids, English label present, known pack, four-language starter set)
-and names any entry that breaks the rules.
+the file (unique ids, English label present, known pack, boolean kid tag, ≥ 90
+kid-tagged entries, four-language starter set) and names any entry that breaks
+the rules.
 
 ## Sounds and fonts
 

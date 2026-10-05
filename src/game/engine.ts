@@ -37,10 +37,11 @@ export interface Round {
  * Round flow per the game-loop spec: spin keeps the category and draws a new
  * letter; next advances to a not-yet-shown category and clears the letter.
  * Switching language resets the letter cycle (letter-wheel spec) but never
- * the category cycle.
+ * the category cycle. Changing the active set (setFilter) rebuilds the
+ * category bag and starts a fresh round; the letter cycle is untouched.
  */
 export class GameEngine {
-  private readonly categories: Bag<Category>
+  private categories: Bag<Category>
   private letters: Bag<string>
   private round: Round
 
@@ -62,6 +63,16 @@ export class GameEngine {
     this.lang = lang
     this.letters = new Bag(LETTERS[lang], this.rng)
     this.round = { ...this.round, letter: null }
+  }
+
+  /**
+   * Narrow draws to the active set (enabled packs, or kid entries in Kids
+   * mode). Rebuilds the category bag and starts a fresh round, mirroring
+   * the language-switch pattern; the letter bag is untouched.
+   */
+  setFilter(active: readonly Category[]): void {
+    this.categories = new Bag(active, this.rng)
+    this.round = { category: this.categories.draw(), letter: null }
   }
 
   /** Spin the wheel (also serves Re-spin): same category, fresh letter. */

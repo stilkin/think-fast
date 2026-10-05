@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 /**
- * Generates the two game sounds as 16-bit PCM mono WAV files under
+ * Generates the game sounds as 16-bit PCM mono WAV files under
  * assets/sounds/ — run once at authoring time, the output is committed:
  *
  *   node scripts/gen-sounds.mjs
  *
- * tick.wav  ~40 ms  sharp wooden click (decaying square + noise burst)
- * chime.wav ~700 ms two-note landing ding (G5 -> C6, sine with harmonics)
+ * tick.wav   ~40 ms  sharp wooden click (decaying square + noise burst)
+ * chime.wav  ~700 ms two-note landing ding (G5 -> C6, sine with harmonics)
+ * tock.wav   ~55 ms  softer, lower clock tick (timer seconds)
+ * buzzer.wav ~460 ms two low sawtooth bursts (time's up)
  *
  * Pure Node, no dependencies.
  */
@@ -82,7 +84,46 @@ function chime() {
   return out
 }
 
+/** Softer and lower than tick: the timer's per-second tock. */
+function tock() {
+  const n = seconds(55)
+  const out = new Float64Array(n)
+  for (let i = 0; i < n; i++) {
+    const t = i / SAMPLE_RATE
+    const env = Math.exp(-t * 180)
+    const square = Math.sign(Math.sin(2 * Math.PI * 950 * t)) * 0.5
+    out[i] = (square + noise() * 0.3) * env * 0.38
+  }
+  return out
+}
+
+/** Two short low sawtooth bursts — unmistakable "time is up". */
+function buzzer() {
+  const n = seconds(460)
+  const out = new Float64Array(n)
+  const bursts = [
+    { start: 0, length: 170 }, // F#2
+    { start: 250, length: 210 }, // same again, slightly longer
+  ]
+  for (const { start, length } of bursts) {
+    const begin = seconds(start)
+    const end = Math.min(seconds(start + length), n)
+    for (let i = begin; i < end; i++) {
+      const t = (i - begin) / SAMPLE_RATE
+      // quick attack, slow release so each burst reads as a honk
+      const env = Math.min(1, t * 400) * Math.exp(-t * 6)
+      const f = 92.5
+      const saw = 2 * ((t * f) % 1) - 1
+      const body = saw + 0.3 * Math.sign(Math.sin(2 * Math.PI * f * 2 * t))
+      out[i] += body * env * 0.55
+    }
+  }
+  return out
+}
+
 mkdirSync(OUT_DIR, { recursive: true })
 writeFileSync(join(OUT_DIR, 'tick.wav'), wav(tick()))
 writeFileSync(join(OUT_DIR, 'chime.wav'), wav(chime()))
-console.log(`wrote ${OUT_DIR}/tick.wav and chime.wav`)
+writeFileSync(join(OUT_DIR, 'tock.wav'), wav(tock()))
+writeFileSync(join(OUT_DIR, 'buzzer.wav'), wav(buzzer()))
+console.log(`wrote tick, chime, tock and buzzer to ${OUT_DIR}`)

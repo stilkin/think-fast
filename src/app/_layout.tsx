@@ -35,6 +35,7 @@ function RootNavigator() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="game" />
+      <Stack.Screen name="settings" />
     </Stack>
   )
 }

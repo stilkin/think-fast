@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CATEGORIES, LANGS, LETTERS, type Pack } from './categories'
+import { CATEGORIES, LANGS, LETTERS, PACKS, type Pack } from './categories'
 
 const KNOWN_PACKS: readonly Pack[] = ['basis', 'gevorderd', 'thematisch']
 
@@ -85,5 +85,34 @@ describe('category data contract', () => {
     expect(`missing base-list categories: ${missing.join(', ')}`).toBe(
       'missing base-list categories: ',
     )
+  })
+})
+
+describe('kid tag contract', () => {
+  it('kid, when present, is a boolean', () => {
+    const offenders = CATEGORIES.filter(
+      (c) => c.kid !== undefined && typeof c.kid !== 'boolean',
+    ).map((c) => c.id)
+    expect(`non-boolean kid: ${offenders.join(', ')}`).toBe('non-boolean kid: ')
+  })
+
+  it('ships at least 90 kid-tagged entries', () => {
+    expect(CATEGORIES.filter((c) => c.kid === true).length).toBeGreaterThanOrEqual(90)
+  })
+
+  it('every pack has at least one kid-tagged entry', () => {
+    for (const pack of KNOWN_PACKS) {
+      const count = CATEGORIES.filter((c) => c.pack === pack && c.kid === true).length
+      expect(count, `${pack} has no kid-tagged entries`).toBeGreaterThan(0)
+    }
+  })
+})
+
+describe('pack names', () => {
+  it('every pack has a non-empty display name in all four languages', () => {
+    const offenders = KNOWN_PACKS.flatMap((pack) =>
+      LANGS.filter((lang) => !PACKS[pack][lang]?.trim()).map((lang) => `${pack} (${lang})`),
+    )
+    expect(`missing pack names: ${offenders.join(', ')}`).toBe('missing pack names: ')
   })
 })
