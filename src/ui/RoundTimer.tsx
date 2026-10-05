@@ -10,6 +10,7 @@ import {
 import { Platform, StyleSheet, Text, View } from 'react-native'
 import Animated, {
   cancelAnimation,
+  Easing,
   interpolateColor,
   useAnimatedProps,
   useSharedValue,
@@ -64,16 +65,13 @@ export const RoundTimer = forwardRef<RoundTimerHandle, RoundTimerProps>(function
 ) {
   /** 1 = full time left, drains to 0 — the ring's visual truth. */
   const progress = useSharedValue(0)
-  const graceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const ticker = useRef<ReturnType<typeof setInterval> | null>(null)
+  const ticker = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [visible, setVisible] = useState(false)
   const [secondsLeft, setSecondsLeft] = useState(0)
   const [expired, setExpired] = useState(false)
 
   const stopClock = useCallback(() => {
-    if (graceTimer.current) clearTimeout(graceTimer.current)
-    if (ticker.current) clearInterval(ticker.current)
-    graceTimer.current = null
+    if (ticker.current) clearTimeout(ticker.current)
     ticker.current = null
   }, [])
 
@@ -90,26 +88,36 @@ export const RoundTimer = forwardRef<RoundTimerHandle, RoundTimerProps>(function
     const total = Math.max(1, Math.round(durationMs / 1000))
     setVisible(true)
     setSecondsLeft(total)
+    // Linear so the drain keeps exact pace with the seconds (the default
+    // ease-in-out rushes the middle and reads as finishing early).
     progress.value = 1
-    progress.value = withDelay(GRACE_MS, withTiming(0, { duration: durationMs }))
+    progress.value = withDelay(
+      GRACE_MS,
+      withTiming(0, { duration: durationMs, easing: Easing.linear }),
+    )
 
-    // The clock: after the grace period, one tick per second — badge, tocks,
-    // buzzer and expiry all come from this single regular cadence.
-    graceTimer.current = setTimeout(() => {
-      let remaining = total
-      ticker.current = setInterval(() => {
-        remaining -= 1
-        setSecondsLeft(Math.max(0, remaining))
-        if (remaining <= 0) {
-          stopClock()
-          playBuzzer()
-          setExpired(true)
-          onExpire?.()
-        } else if (remaining <= 5) {
-          playTock()
-        }
-      }, 1000)
-    }, GRACE_MS)
+    // The clock: badge, tocks, buzzer and expiry, one tick per second. Each
+    // tick re-arms against its absolute deadline — RN's setInterval re-arms
+    // from callback time, so jank would accumulate and drift the clock away
+    // from the ring; setTimeout on a fixed grid cannot.
+    const idealBase = Date.now() + GRACE_MS
+    const fire = (tick: number) => {
+      const remaining = total - tick
+      setSecondsLeft(Math.max(0, remaining))
+      if (remaining <= 0) {
+        stopClock()
+        playBuzzer()
+        setExpired(true)
+        onExpire?.()
+        return
+      }
+      if (remaining <= 5) playTock()
+      ticker.current = setTimeout(
+        () => fire(tick + 1),
+        Math.max(0, idealBase + (tick + 1) * 1000 - Date.now()),
+      )
+    }
+    ticker.current = setTimeout(() => fire(1), GRACE_MS + 1000)
   }, [cancel, durationMs, onExpire, progress, stopClock])
 
   useImperativeHandle(ref, () => ({ start, cancel }), [start, cancel])

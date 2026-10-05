@@ -60,7 +60,7 @@ function tick() {
     const t = i / SAMPLE_RATE
     const env = Math.exp(-t * 260)
     const square = Math.sign(Math.sin(2 * Math.PI * 1900 * t)) * 0.5
-    out[i] = (square + noise() * 0.6) * env * 0.55
+    out[i] = (square + noise() * 0.6) * env * 0.75
   }
   return out
 }
@@ -92,7 +92,7 @@ function tock() {
     const t = i / SAMPLE_RATE
     const env = Math.exp(-t * 180)
     const square = Math.sign(Math.sin(2 * Math.PI * 950 * t)) * 0.5
-    out[i] = (square + noise() * 0.3) * env * 0.38
+    out[i] = (square + noise() * 0.3) * env * 0.5
   }
   return out
 }
@@ -115,7 +115,7 @@ function buzzer() {
       const f = 92.5
       const saw = 2 * ((t * f) % 1) - 1
       const body = saw + 0.3 * Math.sign(Math.sin(2 * Math.PI * f * 2 * t))
-      out[i] += body * env * 0.55
+      out[i] += body * env * 0.4
     }
   }
   return out
