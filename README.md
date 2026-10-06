@@ -9,7 +9,7 @@ EN / NL / DE / FR out of the box, fully offline.
 Tap the wheel (or wait for the automatic spin after "Next category"). Name something
 in the category that starts with the landed letter.
 
-- **New letter** — stuck? Same category, new letter.
+- **Stuck on a letter?** Tap the wheel to spin the same category again.
 - **Next category** — new challenge, spins automatically.
 - Letters and categories never repeat until their whole set has been used.
 
@@ -68,7 +68,8 @@ the rules.
 
 ## Sounds and fonts
 
-`assets/sounds/tick.wav` and `chime.wav` are generated (no external sources):
+The four game sounds (`tick`, `chime`, `tock`, `buzzer`) are generated — no external
+sources:
 
 ```bash
 node scripts/gen-sounds.mjs
@@ -76,3 +77,23 @@ node scripts/gen-sounds.mjs
 
 The display font is [Fredoka](https://fonts.google.com/specimen/Fredoka) (SIL OFL),
 bundled under `assets/fonts/`.
+
+## Icons and splash
+
+The launcher icons and splash wordmark are generated from text sources, so they stay
+diffable and regenerable:
+
+- Sources: `assets/icon-sources/*.svg` — `TF!` / "Think Fast!" set in
+  [Titan One](https://fonts.google.com/specimen/Titan+One) (SIL OFL, TTF + license
+  committed under `assets/fonts/`), on the app's ink background. The in-app UI
+  stays Fredoka; Titan One is the wordmark face only.
+- Outputs (`assets/images/`): `icon.png` (1024, iOS + fallback), adaptive
+  foreground/monochrome (1024), `favicon.png` (48), `splash-icon.png` (1280×512),
+  and `play-icon.png` (512, the Play Store listing asset).
+
+```bash
+node scripts/gen-icons.mjs   # needs system Chromium (uses the same binary as the app's web testing)
+```
+
+The script serves the sources over a local HTTP server and rasterizes them through
+Chromium via playwright-core; rerunning it reproduces byte-identical PNGs.

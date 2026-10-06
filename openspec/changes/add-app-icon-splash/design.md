@@ -20,16 +20,19 @@
 ## Decisions
 
 ### D1 — Mockup-first variant selection
-Render four icon variants as actual PNGs before wiring anything: (a) plain `TF`, (b) `TF` + coral `!`, (c) `TF` + small lightning corner badge, (d) stock Noto ferris wheel as the control sample. The user picks one from a contact sheet; everything downstream is variant-agnostic.
+Render four icon variants as actual PNGs before wiring anything: (a) plain `TF`, (b) `TF` + coral `!`, (c) `TF` + small lightning corner badge, (d) stock emoji ferris wheel as the control sample (ended up Twemoji, CC-BY 4.0 — Noto's repo no longer ships per-emoji SVGs). The user picks one from a contact sheet; everything downstream is variant-agnostic.
 *Why:* the user asked to choose from options, and ASCII sketches under-sell typography. Alternative — pick now and wire it — rejected: the whole point is a pixel-informed choice.
+
+**Selected (2026-10-06, from the two mockup sheets in `assets/icon-sources/mockup-sheet.png`):** composition **B** — butter `TF` + coral `!` — enlarged (wordmark spans ~65% of the tile), set in **Titan One** (OFL), chosen over runner-ups Luckiest Guy and Lilita One in a six-way font bake-off. The splash wordmark uses the same font and carries the same coral `!`. The wordmark font is icon/splash-only: the in-app UI stays Fredoka (switching the app font would be its own change). The winning TTF gets committed under `assets/fonts/` with its OFL license text in the generator task.
 
 ### D2 — Sources are SVG + the gen script supplies the font
 Icon sources live in `assets/icon-sources/*.svg` (one per family member: iOS/adaptive-foreground glyph, monochrome, splash wordmark, favicon) using `<text>` with `font-family: Fredoka` and hardcoded palette hexes (cross-referenced to `theme.ts` in a comment — TS tokens can't be imported into SVG; a comment beats a build step).
 *Why:* keeps sources diffable text; Fredoka stays the single font family. Alternative — converting text to static paths — rejected: harder to maintain than a `<text>` element, and Chromium renders the real TTF anyway.
 
-### D3 — Rasterize via the system Chromium, no new dependencies
-`scripts/gen-icons.mjs` wraps each SVG in a minimal HTML shell with an `@font-face` pointing at the committed TTFs, then screenshots it with `/usr/bin/chromium-browser --headless` at exact `--window-size`s (the same binary the web verification already uses). Opaque surfaces (iOS icon, Play 512) render on solid ink; transparent surfaces (adaptive foreground, monochrome, favicon, splash wordmark) use `--default-background-color=00000000`.
-*Why:* zero new packages; one rasterizer we already trust. Alternatives — `sharp`/`resvg-js` (new dep) or hand-exported PNGs (unregenerable) — both worse under the project's "simple, clean, maintainable".
+### D3 — Rasterize via the system Chromium driven over CDP
+*(Corrected during task 1.1 — the original plan of `chromium --headless --screenshot` CLI flags does not work on this box: the snap-confined Chromium cannot read `file://` pages, and the sandbox denies it writing PNG files.)*
+`scripts/gen-icons.mjs` embeds a tiny Node HTTP server that serves two things: the SVG source wrapped in a minimal HTML shell whose `@font-face` rules point at the committed TTFs (font filenames resolved from `assets/fonts/` at runtime — the underscore-heavy names must never be hardcoded), and the font files themselves. It then drives the system `/usr/bin/chromium-browser` via `playwright-core` (CDP) and takes `page.screenshot()`s at exact viewport sizes — the Node process writes the PNGs, which the sandbox permits. `playwright-core` becomes a devDependency (it downloads no browser; it drives the system Chromium). Opaque surfaces (iOS icon, Play 512) render on solid ink; transparent surfaces (adaptive foreground, monochrome, favicon, splash wordmark) use Playwright's `omitBackground`.
+*Why:* this is the exact mechanism already proven by the web-verification suite and by the mockup render; it keeps "one rasterizer we already trust". Alternatives — `sharp`/`resvg-js` (new native deps) or hand-exported PNGs (unregenerable) — both worse under the project's "simple, clean, maintainable".
 
 ### D4 — Output set and sizes
 | Output | Size | Notes |

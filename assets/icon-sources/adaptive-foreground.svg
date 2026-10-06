@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Think Fast adaptive-icon foreground source: transparent; the TF! glyph sized
+       into Android's ~66% safe zone (ink-width 520, half-diagonal ~334 < 338 safe radius).
+       The launcher background color (ink #241B4F) is set in app.json. Same y-nudge
+       logic as icon.svg (29 up at this size). -->
+  <text
+    x="512" y="483"
+    font-family="TitanOne" font-size="377"
+    text-anchor="middle" dominant-baseline="central"
+    fill="#FFC53D"
+  >TF<tspan fill="#FF6B6B" dx="-12">!</tspan></text>
+</svg>

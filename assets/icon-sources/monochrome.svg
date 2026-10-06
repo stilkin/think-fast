@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Think Fast monochrome (Android themed icon) source: same geometry as the
+       adaptive foreground; Android recolors it from the alpha channel, so the
+       cream fill only matters for previews. -->
+  <text
+    x="512" y="483"
+    font-family="TitanOne" font-size="377"
+    text-anchor="middle" dominant-baseline="central"
+    fill="#FFF6E7"
+  >TF<tspan dx="-12">!</tspan></text>
+</svg>

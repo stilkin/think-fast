@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 512">
+  <!-- Think Fast splash source: full wordmark in Titan One, transparent background —
+       expo-splash-screen composites it over backgroundColor #241B4F (app.json).
+       Anchor at the box center; y nudged 9 up for optical centering (pixel-verified). -->
+  <text
+    x="640" y="247"
+    font-family="TitanOne" font-size="195.3"
+    text-anchor="middle" dominant-baseline="central"
+    fill="#FFC53D"
+  >Think Fast<tspan fill="#FF6B6B" dx="-14">!</tspan></text>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Think Fast icon source — the chosen identity (design D1, selected 2026-10-06):
+       TF! in Titan One (butter) + coral !, wordmark ink-width 650 of 1024, optically centered.
+       Palette mirrors src/ui/theme.ts: ink #241B4F, butter #FFC53D, coral #FF6B6B.
+       Anchor on the canvas center; y nudged 36 up because dominant-baseline central
+       sits low in Titan One (optical centering verified by pixel scan). -->
+  <rect width="1024" height="1024" fill="#241B4F" />
+  <text
+    x="512" y="476"
+    font-family="TitanOne" font-size="471"
+    text-anchor="middle" dominant-baseline="central"
+    fill="#FFC53D"
+  >TF<tspan fill="#FF6B6B" dx="-12">!</tspan></text>
+</svg>
