@@ -1,0 +1,5 @@
+# pnpm reads build-script approvals here, not from package.json. pnpm 10 blocks
+# dependency install scripts by default and fails CI installs (the first EAS
+# build) over the unacknowledged simple-git-hooks script — approve it explicitly.
+onlyBuiltDependencies:
+  - simple-git-hooks
