@@ -1,3 +1,4 @@
+import * as Linking from 'expo-linking'
 import { router } from 'expo-router'
 import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -5,6 +6,9 @@ import { PACKS, type Pack } from '../data/categories'
 import { type PackSelection, TIMER_DURATIONS, type TimerSeconds, useGame } from '../game/GameState'
 import { stringsFor } from '../i18n/strings'
 import { fonts, palette, radius, shadow, spacing, type } from '../ui/theme'
+
+/** The developer's tip jar (kofi spec): opened in the browser, never blocking. */
+const KOFI_URL = 'https://ko-fi.com/stilkin'
 
 /**
  * Settings (game-settings spec): Kids master switch above the pack toggles,
@@ -159,6 +163,17 @@ export default function SettingsScreen() {
             })}
           </View>
         </View>
+
+        {/* support link — the quiet footer (kofi spec): coral cup, dimmed label */}
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel={s.supportKoFi}
+          onPress={() => Linking.openURL(KOFI_URL)}
+          style={({ pressed }) => [styles.kofi, pressed && styles.rowPressed]}
+        >
+          <Text style={styles.kofiEmoji}>☕</Text>
+          <Text style={styles.kofiText}>{s.supportKoFi}</Text>
+        </Pressable>
       </ScrollView>
     </View>
   )
@@ -295,5 +310,23 @@ const styles = StyleSheet.create({
   },
   pressed: {
     transform: [{ scale: 0.97 }],
+  },
+  kofi: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.s,
+    marginTop: spacing.s,
+    paddingVertical: 12,
+    paddingHorizontal: spacing.l,
+  },
+  kofiEmoji: {
+    fontSize: 15,
+    color: palette.coral,
+  },
+  kofiText: {
+    fontFamily: fonts.text,
+    fontSize: 14,
+    color: palette.cream,
+    opacity: 0.65,
   },
 })

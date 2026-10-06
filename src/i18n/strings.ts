@@ -20,6 +20,7 @@ export interface Strings {
   timerSection: string
   timerLength: string
   again: string
+  supportKoFi: string
 }
 
 export const STRINGS: Record<Lang, Strings> = {
@@ -42,6 +43,7 @@ export const STRINGS: Record<Lang, Strings> = {
     timerSection: 'Round timer',
     timerLength: 'Length',
     again: 'AGAIN',
+    supportKoFi: 'Support me on Ko-fi',
   },
   nl: {
     tagline: 'Draai aan het wiel. Zeg het snel.',
@@ -62,6 +64,7 @@ export const STRINGS: Record<Lang, Strings> = {
     timerSection: 'Rondetimer',
     timerLength: 'Duur',
     again: 'OPNIEUW',
+    supportKoFi: 'Steun me op Ko-fi',
   },
   de: {
     tagline: 'Drehe am Rad. Sag es schnell.',
@@ -82,6 +85,7 @@ export const STRINGS: Record<Lang, Strings> = {
     timerSection: 'Runden-Timer',
     timerLength: 'Dauer',
     again: 'NOCHMAL',
+    supportKoFi: 'Unterstütze mich auf Ko-fi',
   },
   fr: {
     tagline: 'Fais tourner la roue. Dis-le vite.',
@@ -102,6 +106,7 @@ export const STRINGS: Record<Lang, Strings> = {
     timerSection: 'Minuteur du tour',
     timerLength: 'Durée',
     again: 'ENCORE',
+    supportKoFi: 'Soutiens-moi sur Ko-fi',
   },
 }
 
