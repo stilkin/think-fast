@@ -1,8 +1,9 @@
 # Think Fast
 
 Digital Pim Pam Pet: spin the wheel, get a letter and a category, and name something
-that fits — fast. Expo (React Native, TypeScript) app for Android and iOS;
-EN / NL / DE / FR out of the box, fully offline.
+that fits — fast. Expo (React Native, TypeScript) app for Android and iOS (plus any
+browser via Expo web); EN / NL / DE / FR out of the box. Fully offline: there is no
+backend, no account, no analytics — nothing to configure.
 
 ## Playing
 
@@ -12,17 +13,43 @@ in the category that starts with the landed letter.
 - **Stuck on a letter?** Tap the wheel to spin the same category again.
 - **Next category** — new challenge, spins automatically.
 - Letters and categories never repeat until their whole set has been used.
+- **Round timer** (optional): a 10 / 20 / 30 s countdown starts when a letter lands,
+  ticking over the final seconds and buzzing at zero.
+- **Settings (⚙)**: Kids mode (draws only from kid-friendly categories), category
+  packs, and the round timer.
 
 The language can be switched anytime via the flag button (top right); sound via the
 speaker button. Both are remembered.
 
-## Developing
+## Tech stack
 
-Package manager is pnpm; do not use npm/yarn.
+- **Language:** TypeScript (strict) across the app, the scripts, and the tests.
+- **Framework:** Expo SDK 57 / React Native 0.86 / React 19, with
+  [expo-router](https://docs.expo.dev/router/introduction/) for navigation.
+- **UI & animation:** react-native-svg for the wheel, Reanimated for spin and
+  letter-stamp motion.
+- **Audio:** expo-audio playing four generated sounds (see below).
+- **Persistence:** AsyncStorage for the settings (language, sound, packs, kids,
+  timer). No database, no server.
+- **i18n:** a typed string module (`src/i18n/`) — no i18n library.
+- **Tooling:** pnpm, Biome (lint + format), Vitest (tests + coverage),
+  simple-git-hooks pre-commit.
+
+## Getting started
+
+You need Node LTS and pnpm (`corepack enable`), plus something to run the app on:
+Expo Go on a phone, an emulator, or a browser (press `w` in the dev-server menu).
 
 ```bash
 pnpm install
-pnpm start          # Expo dev server (Expo Go / dev client / emulators)
+pnpm start          # Expo dev server
+```
+
+That is the whole setup — no `.env`, no keys, no services to start.
+
+### Commands
+
+```bash
 pnpm typecheck      # tsc --noEmit
 pnpm lint           # biome check
 pnpm test           # vitest (data contract, i18n completeness, game logic, wheel math)
@@ -33,6 +60,21 @@ A pre-commit hook (installed automatically by `pnpm install`) runs Biome on stag
 files and re-stages the fixes; skip it once with `git commit --no-verify`.
 
 Work happens through OpenSpec changes — see CLAUDE.md.
+
+## Project layout
+
+```
+src/
+  app/         screens (expo-router): index = language picker, game, settings
+  data/        categories.ts — all category data; categories.test.ts
+  game/        engine.ts (no-repeat draws), GameState.tsx (provider + persistence)
+  i18n/        strings.ts — every UI string in EN/NL/DE/FR; completeness test
+  sound/       expo-audio wiring for the four sounds
+  ui/          theme.ts (palette, type), RoundTimer.tsx
+  wheel/       geometry.ts (segment math), Wheel.tsx (SVG wheel)
+assets/        fonts, sounds, images, icon-sources
+scripts/       gen-sounds.mjs, gen-icons.mjs (asset generators)
+```
 
 ## Building for a device (EAS)
 
@@ -111,3 +153,15 @@ node scripts/gen-icons.mjs   # needs system Chromium (uses the same binary as th
 
 The script serves the sources over a local HTTP server and rasterizes them through
 Chromium via playwright-core; rerunning it reproduces byte-identical PNGs.
+
+## Support
+
+If you enjoy Think Fast! and want to support its development, consider buying me a drink:
+
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/stilkin)
+
+Your support helps me continue developing and improving Think Fast!
+
+## License
+
+[PolyForm Noncommercial 1.0.0](LICENSE) — free to use for personal and non-commercial purposes.

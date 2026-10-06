@@ -12,4 +12,4 @@
 
 ## 3. Docs
 
-- [ ] 3.1 Document the preview build in README (login, build command, APK install); verify the documented command runs as written
+- [x] 3.1 Document the preview build in README (login, build command, APK install); verify the documented command runs as written
