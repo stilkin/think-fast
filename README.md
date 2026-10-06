@@ -34,6 +34,20 @@ files and re-stages the fixes; skip it once with `git commit --no-verify`.
 
 Work happens through OpenSpec changes — see CLAUDE.md.
 
+## Building for a device (EAS)
+
+One-time: `pnpm dlx eas-cli login`. A preview APK (internal distribution —
+installable straight on a phone, no store):
+
+```bash
+pnpm dlx eas-cli build --platform android --profile preview --non-interactive
+```
+
+The CLI prints the build URL; when the build finishes that page offers the APK
+and a QR code to scan on the phone. The EAS project lives at
+[expo.dev/accounts/pocito/projects/think-fast](https://expo.dev/accounts/pocito/projects/think-fast)
+(Android package `be.pocito.thinkfast`).
+
 ## Adding categories
 
 All categories live in [`src/data/categories.ts`](src/data/categories.ts) — that is the
