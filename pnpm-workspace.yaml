@@ -1,5 +1,7 @@
-# pnpm reads build-script approvals here, not from package.json. pnpm 10 blocks
-# dependency install scripts by default and fails CI installs (the first EAS
-# build) over the unacknowledged simple-git-hooks script — approve it explicitly.
-onlyBuiltDependencies:
-  - simple-git-hooks
+# pnpm reads build-script approvals here. pnpm 10 blocks dependency install
+# scripts by default and pnpm 11 fails the install outright (strictDepBuilds),
+# which killed the first two EAS builds over simple-git-hooks' postinstall.
+# `allowBuilds` is the setting both pnpm 10.26+ and 11 understand — the older
+# onlyBuiltDependencies list was removed in pnpm 11.
+allowBuilds:
+  simple-git-hooks: true
