@@ -90,6 +90,33 @@ and a QR code to scan on the phone. The EAS project lives at
 [expo.dev/accounts/pocito/projects/think-fast](https://expo.dev/accounts/pocito/projects/think-fast)
 (Android package `be.pocito.thinkfast`).
 
+### Store releases (production)
+
+The `production` profile builds store artifacts — an Android App Bundle (`.aab`)
+and an iOS IPA — signed with EAS-managed keys. Build numbers increment
+server-side (`appVersionSource: remote`); `app.json` only owns the
+human-readable version, and each build's page shows its numbers.
+
+```bash
+pnpm dlx eas-cli build --platform android --profile production --non-interactive
+pnpm dlx eas-cli build --platform ios --profile production
+```
+
+The first iOS build is interactive: it asks for the Apple ID and lets EAS
+create the distribution certificate and provisioning profile.
+
+First uploads:
+
+- **Google Play**: download the `.aab` from the build page and upload it in
+  Play Console under Testing → Internal testing. (Store listings, data-safety
+  and content-rating forms are manual Console work, not automated here.)
+- **App Store**: from a Linux box, upload via `eas submit` with an App Store
+  Connect API key (Transporter, the alternative uploader, is macOS-only):
+
+  ```bash
+  pnpm dlx eas-cli submit --platform ios --latest --key <asc-api-key.p8>
+  ```
+
 ## Adding categories
 
 All categories live in [`src/data/categories.ts`](src/data/categories.ts) — that is the
