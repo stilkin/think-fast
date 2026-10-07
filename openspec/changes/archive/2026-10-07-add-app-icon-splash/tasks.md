@@ -18,4 +18,4 @@
 ## 4. Integration checks
 
 - [x] 4.1 Statics green (`pnpm typecheck` / `lint` / `test`) and the web export builds serving the new favicon; verify no console errors on the exported app
-- [ ] 4.2 On-device pass: launcher icon legible at small sizes, adaptive mask keeps the monogram intact, cold start shows the wordmark on ink with no seam into the game screen (user verdict)
+- [x] 4.2 On-device pass: launcher icon legible at small sizes, adaptive mask keeps the monogram intact, cold start shows the wordmark on ink with no seam into the game screen (user verdict — confirmed on the EAS preview APK da6fa065, 2026-10-07)

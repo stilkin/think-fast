@@ -7,4 +7,4 @@
 
 ## 2. Checks
 
-- [ ] 2.1 Statics green (`pnpm typecheck` / `lint` / `test`); on-device spot check together with the EAS preview build's app-identity pass (settings bottom, tap opens browser)
+- [x] 2.1 Statics green (`pnpm typecheck` / `lint` / `test`); on-device spot check together with the EAS preview build's app-identity pass (settings bottom, tap opens browser) — statics re-verified and device pass confirmed 2026-10-07

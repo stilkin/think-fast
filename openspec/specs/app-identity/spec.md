@@ -1,13 +1,13 @@
-# Spec Delta
+# app-identity Specification
 
 ## Purpose
 
 The app's branded appearance at OS level: the launcher icon family across iOS, Android (adaptive and themed), web, and store listings, plus the launch screen — one wordmark identity, derived from committed regenerable sources.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: The launcher icon family carries the wordmark identity
-Every launcher representation of the app — the iOS icon, the Android adaptive icon (foreground, background, monochrome), and the web favicon — SHALL be generated from one wordmark design in the app's identity (Fredoka monogram on the ink night sky), replacing the Expo template defaults.
+Every launcher representation of the app — the iOS icon, the Android adaptive icon (foreground, background, monochrome), and the web favicon — SHALL be generated from one wordmark design in the app's identity (Titan One monogram on the ink night sky), replacing the Expo template defaults.
 
 #### Scenario: Small launcher size stays legible
 - **WHEN** the icon renders at the smallest common launcher size (about 29 px)

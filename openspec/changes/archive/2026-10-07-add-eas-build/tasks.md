@@ -7,8 +7,8 @@
 
 ## 2. Build & install
 
-- [ ] 2.1 Kick the first build (`eas build --platform android --profile preview`, non-interactive) and see it through; verify it finishes with an APK artifact URL
-- [ ] 2.2 Install the APK on the user's phone and pass the app-identity checks (launcher icon at small sizes, adaptive mask, cold-start splash + hand-off — Android 12+ system-splash reality per design D4); this verdict also closes add-app-icon-splash task 4.2
+- [x] 2.1 Kick the first build (`eas build --platform android --profile preview`, non-interactive) and see it through; verify it finishes with an APK artifact URL — two pnpm-11 build-script failures fixed along the way (`648d59d`, `33b058a`); build `da6fa065` finished 2026-10-07 with APK artifact URL
+- [x] 2.2 Install the APK on the user's phone and pass the app-identity checks (launcher icon at small sizes, adaptive mask, cold-start splash + hand-off — Android 12+ system-splash reality per design D4); this verdict also closes add-app-icon-splash task 4.2 — user confirmed 2026-10-07 on APK da6fa065
 
 ## 3. Docs
 
