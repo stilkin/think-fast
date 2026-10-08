@@ -93,6 +93,33 @@ function checkAgainstSpec(method, urlPath) {
   return match
 }
 
+/** Authenticated, spec-checked API call. Returns {status, body}; throws nothing. */
+export async function ascFetch(method, urlPath, bodyObj) {
+  const specPath = checkAgainstSpec(method, urlPath)
+  const body = bodyObj !== undefined ? JSON.stringify(bodyObj) : undefined
+  const res = await fetch(`${API_BASE}${urlPath}`, {
+    method,
+    headers: {
+      Authorization: `Bearer ${makeToken()}`,
+      'Content-Type': 'application/json',
+    },
+    body,
+  })
+  const text = await res.text()
+  let json
+  try {
+    json = JSON.parse(text)
+  } catch {
+    json = { raw: text.slice(0, 2000) }
+  }
+  console.log(`${res.status} ${method} ${specPath}`)
+  if (res.status >= 400) {
+    console.log(JSON.stringify(json, null, 1).slice(0, 4000))
+    throw new Error(`${res.status} ${method} ${urlPath} — stopping, no retries by design`)
+  }
+  return { status: res.status, body: json }
+}
+
 async function main() {
   const [command, urlPath, bodyFile] = args.filter((a) => !a.startsWith('--')).slice(0, 3)
   const method = { get: 'GET', post: 'POST', patch: 'PATCH', delete: 'DELETE' }[command]
@@ -100,28 +127,17 @@ async function main() {
     console.error('usage: asc-api.mjs get|post|patch|delete <path> [body.json]')
     process.exit(2)
   }
-  const specPath = checkAgainstSpec(method, urlPath)
-  const body = bodyFile ? readFileSync(bodyFile, 'utf8') : undefined
-  const res = await fetch(`${API_BASE}${urlPath}`, {
-    method,
-    headers: {
-      Authorization: `Bearer ${makeToken()}`,
-      'Content-Type': 'application/json',
-      ...(body ? { 'Content-Length': String(Buffer.byteLength(body)) } : {}),
-    },
-    body,
-  })
-  const text = await res.text()
-  console.log(`${res.status} ${method} ${specPath}`)
-  try {
-    console.log(JSON.stringify(JSON.parse(text), null, 1).slice(0, 4000))
-  } catch {
-    console.log(text.slice(0, 2000))
-  }
-  if (res.status >= 400) process.exit(1)
+  const body = bodyFile ? JSON.parse(readFileSync(bodyFile, 'utf8')) : undefined
+  const { status, body: json } = await ascFetch(method, urlPath, body)
+  console.log(JSON.stringify(json, null, 1).slice(0, 4000))
 }
 
-main().catch((err) => {
-  console.error(err)
-  process.exit(1)
-})
+const invokedDirectly =
+  process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href
+
+if (invokedDirectly) {
+  main().catch((err) => {
+    console.error(err.message ?? err)
+    process.exit(1)
+  })
+}

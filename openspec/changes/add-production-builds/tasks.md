@@ -14,7 +14,7 @@
 ## 3. iOS store release
 
 - [x] 3.1 First iOS production build with the user present for Apple credential setup (Apple ID login; EAS generates the distribution cert + profile per design D3); verify the artifact is an `.ipa` with a URL — build `fb656eb9` finished 2026-10-08 with an `.ipa` artifact URL (buildNumber 4; 1–3 burned on the pre-credential attempts). Done in the user's terminal after the project's transfer to the pocito-be account
-- [ ] 3.2 Create an App Store Connect API key together with the user, run `eas submit --platform ios --latest`, and verify the build appears in App Store Connect (design D5; this is the only upload path from Linux)
+- [x] 3.2 Create an App Store Connect API key together with the user, run `eas submit --platform ios --latest`, and verify the build appears in App Store Connect (design D5; this is the only upload path from Linux) — key reused from the user's soup-quiz setup; build `fb656eb9` submitted 2026-10-08 to app 6820671311, processing confirmed
 
 ## 4. Docs
 
