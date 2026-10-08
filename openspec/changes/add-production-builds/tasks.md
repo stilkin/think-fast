@@ -18,4 +18,4 @@
 
 ## 4. Docs
 
-- [ ] 4.1 Document production builds in README (profile, credential login, version inspection, per-store first upload per design D5, listings explicitly deferred); verify the documented commands run as written
+- [x] 4.1 Document production builds in README (profile, credential login, version inspection, per-store first upload per design D5, listings explicitly deferred); verify the documented commands run as written — build, submit, and metadata commands all ran verbatim during the iOS release; listing flow documented in add-ios-store-listing 3.3

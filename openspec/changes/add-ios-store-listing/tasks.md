@@ -9,14 +9,14 @@
 
 ## 2. App record and binary
 
-- [ ] 2.1 User creates the App Store Connect record in the web UI (Think Fast!, be.pocito.thinkfast, SKU be.pocito.thinkfast, en-US); then verify with exactly one `GET /v1/apps?filter[bundleId]=…` that the key works and the record exists
-- [ ] 2.2 Submit the IPA (`eas submit --platform ios --latest --key <p8>`); verify the build appears (one `GET /v1/apps/{id}/builds` or the ASC build list) — this also completes add-production-builds task 3.2
+- [x] 2.1 User creates the App Store Connect record in the web UI (Think Fast!, be.pocito.thinkfast, SKU be.pocito.thinkfast, en-US); then verify with exactly one `GET /v1/apps?filter[bundleId]=…` that the key works and the record exists — record existed (app 6820671311, en-GB, SKU think-fast); key verified with that one GET
+- [x] 2.2 Submit the IPA (`eas submit --platform ios --latest --key <p8>`); verify the build appears (one `GET /v1/apps/{id}/builds` or the ASC build list) — this also completes add-production-builds task 3.2 — build 4 uploaded via eas submit, processingState VALID
 
 ## 3. Listing content
 
-- [ ] 3.1 Push metadata (`eas metadata:push`), reviewing its validation output first; verify with a read-back (`metadata:pull` diff or API GET) that the listing fields landed
-- [ ] 3.2 Upload the two screenshot sets via the API flow per design D4 (spec-checked payload; on any mismatch stop and fall back to web drag-drop); verify the sets appear complete for both display types
-- [ ] 3.3 Document the store listing flow in README (store.config, screenshots script, the manual-remainder list: pricing, data-collection label, record creation, submit button); tick add-production-builds 4.1 once the iOS commands are proven
+- [x] 3.1 Push metadata (`eas metadata:push`), reviewing its validation output first; verify with a read-back (`metadata:pull` diff or API GET) that the listing fields landed — en-GB description/keywords/supportUrl verified via API read-back; review block deferred (Apple requires a phone number — waiting on the user); version string aligned 1.0→0.1.0 with one spec-checked PATCH
+- [x] 3.2 Upload the two screenshot sets via the API flow per design D4 (spec-checked payload; on any mismatch stop and fall back to web drag-drop); verify the sets appear complete for both display types — APP_IPHONE_61 + APP_IPAD_PRO_3GEN_129, all ten assetDeliveryState COMPLETE
+- [x] 3.3 Document the store listing flow in README (store.config, screenshots script, the manual-remainder list: pricing, data-collection label, record creation, submit button); tick add-production-builds 4.1 once the iOS commands are proven
 
 ## 4. Submission (user-gated)
 

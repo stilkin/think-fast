@@ -117,6 +117,26 @@ First uploads:
   pnpm dlx eas-cli submit --platform ios --latest --key <asc-api-key.p8>
   ```
 
+### The iOS listing (store.config.json)
+
+The App Store listing lives in the repo and is pushed, never hand-entered:
+
+- `store.config.json` — copy, keywords, URLs, age rating, category; synced with
+  `pnpm dlx eas-cli metadata:push --profile production` (validation first) and
+  read back with `metadata:pull`. The app's primary locale is en-GB.
+- Screenshots — rendered from the web export by `node scripts/gen-store-screens.mjs`
+  (needs `dist/`, i.e. `pnpm exec expo export -p web`, plus system Chromium),
+  uploaded by `node scripts/asc-upload-screens.mjs`.
+- `scripts/asc-api.mjs` — careful one-off API calls; every path is checked
+  against Apple's OpenAPI spec first and nothing retries. Credentials come from
+  `ASC_KEY_ID` / `ASC_ISSUER_ID` / `ASC_KEY_PATH` (key at
+  `~/.config/think-fast/asc/`).
+
+Still manual in App Store Connect (no API in spec 4.5.1): creating the app
+record, selecting the build on the version page, pricing, the data-collection
+label, and pressing Submit for Review. `PRIVACY.md` is the source for the
+privacy page the listing links to.
+
 ## Adding categories
 
 All categories live in [`src/data/categories.ts`](src/data/categories.ts) — that is the
