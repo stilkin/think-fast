@@ -13,7 +13,7 @@
 
 ## 3. iOS store release
 
-- [ ] 3.1 First iOS production build with the user present for Apple credential setup (Apple ID login; EAS generates the distribution cert + profile per design D3); verify the artifact is an `.ipa` with a URL
+- [x] 3.1 First iOS production build with the user present for Apple credential setup (Apple ID login; EAS generates the distribution cert + profile per design D3); verify the artifact is an `.ipa` with a URL — build `fb656eb9` finished 2026-10-08 with an `.ipa` artifact URL (buildNumber 4; 1–3 burned on the pre-credential attempts). Done in the user's terminal after the project's transfer to the pocito-be account
 - [ ] 3.2 Create an App Store Connect API key together with the user, run `eas submit --platform ios --latest`, and verify the build appears in App Store Connect (design D5; this is the only upload path from Linux)
 
 ## 4. Docs

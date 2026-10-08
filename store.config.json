@@ -1,0 +1,61 @@
+{
+  "configVersion": 0,
+  "version": "0.1.0",
+  "copyright": "2026 Stilkin",
+  "apple": {
+    "info": {
+      "en-US": {
+        "title": "Think Fast!",
+        "subtitle": "Spin the wheel, name it fast",
+        "description": "Think Fast! is the digital version of the classic parlour game Pim Pam Pet — perfect for parties, family evenings, or any table with friends around it.\n\nSpin the letter wheel, read the category, and name something that fits before anybody else does. Stuck? Spin again. Done? Next category. That's the whole game — no setup, no accounts, no waiting.\n\n• Plays in English, Dutch, German, and French\n• Hundreds of categories across three packs, from everyday to themed\n• Kids mode: a safe, easy set for the youngest players\n• Optional round timer: 10, 20, or 30 seconds of pressure\n• Letters and categories never repeat until the set is used up\n• Fully offline — no ads, no tracking, nothing to sign up for\n\nOne phone, one wheel, endless arguments about whether \"xylophone\" counts.",
+        "keywords": [
+          "party game",
+          "word game",
+          "family",
+          "quiz",
+          "spin the wheel",
+          "letters",
+          "categories",
+          "group",
+          "friends",
+          "offline"
+        ],
+        "releaseNotes": "First public release — have fun!",
+        "promoText": "The party game of quick thinking — spin, name, laugh. No ads, no accounts, fully offline.",
+        "supportUrl": "https://think-fast.pocito.fyi/",
+        "privacyPolicyUrl": "https://think-fast.pocito.fyi/privacy"
+      }
+    },
+    "advisory": {
+      "alcoholTobaccoOrDrugUseOrReferences": "NONE",
+      "contests": "NONE",
+      "gamblingSimulated": "NONE",
+      "horrorOrFearThemes": "NONE",
+      "matureOrSuggestiveThemes": "NONE",
+      "medicalOrTreatmentInformation": "NONE",
+      "profanityOrCrudeHumor": "NONE",
+      "sexualContentGraphicAndNudity": "NONE",
+      "sexualContentOrNudity": "NONE",
+      "violenceCartoonOrFantasy": "NONE",
+      "violenceRealistic": "NONE",
+      "violenceRealisticProlongedGraphicOrSadistic": "NONE",
+      "gambling": false,
+      "unrestrictedWebAccess": false,
+      "kidsAgeBand": null,
+      "ageRatingOverride": "NONE",
+      "koreaAgeRatingOverride": "NONE"
+    },
+    "categories": [["GAMES", "GAMES_WORD"]],
+    "release": {
+      "automaticRelease": false,
+      "phasedRelease": false
+    },
+    "review": {
+      "firstName": "Servaas",
+      "lastName": "Tilkin",
+      "email": "servaas.tilkin@gmail.com",
+      "demoRequired": false,
+      "notes": "Simple offline party game: spin a letter wheel, name something in the category. All content is bundled; there is no account, no network use, and no permission the app requests. The support link in Settings opens the developer's Ko-fi page in the browser."
+    }
+  }
+}
