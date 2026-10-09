@@ -16,7 +16,8 @@ in the category that starts with the landed letter.
 - **Round timer** (optional): a 10 / 20 / 30 s countdown starts when a letter lands,
   ticking over the final seconds and buzzing at zero.
 - **Settings (⚙)**: Kids mode (draws only from kid-friendly categories), category
-  packs, and the round timer.
+  packs, and the round timer — plus a quiet link to the
+  [privacy policy](https://think-fast.pocito.fyi/privacy) at the bottom.
 
 The language can be switched anytime via the flag button (top right); sound via the
 speaker button. Both are remembered.

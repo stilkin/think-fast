@@ -129,6 +129,7 @@ async function main() {
   }
   const body = bodyFile ? JSON.parse(readFileSync(bodyFile, 'utf8')) : undefined
   const { status, body: json } = await ascFetch(method, urlPath, body)
+  console.log(`HTTP ${status}`)
   console.log(JSON.stringify(json, null, 1).slice(0, 4000))
 }
 

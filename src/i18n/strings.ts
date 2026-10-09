@@ -21,6 +21,7 @@ export interface Strings {
   timerLength: string
   again: string
   supportKoFi: string
+  privacyPolicy: string
 }
 
 export const STRINGS: Record<Lang, Strings> = {
@@ -44,6 +45,7 @@ export const STRINGS: Record<Lang, Strings> = {
     timerLength: 'Length',
     again: 'AGAIN',
     supportKoFi: 'Support me on Ko-fi',
+    privacyPolicy: 'Privacy policy',
   },
   nl: {
     tagline: 'Draai aan het wiel. Zeg het snel.',
@@ -65,6 +67,7 @@ export const STRINGS: Record<Lang, Strings> = {
     timerLength: 'Duur',
     again: 'OPNIEUW',
     supportKoFi: 'Steun me op Ko-fi',
+    privacyPolicy: 'Privacybeleid',
   },
   de: {
     tagline: 'Drehe am Rad. Sag es schnell.',
@@ -86,6 +89,7 @@ export const STRINGS: Record<Lang, Strings> = {
     timerLength: 'Dauer',
     again: 'NOCHMAL',
     supportKoFi: 'Unterstütze mich auf Ko-fi',
+    privacyPolicy: 'Datenschutzerklärung',
   },
   fr: {
     tagline: 'Fais tourner la roue. Dis-le vite.',
@@ -107,6 +111,7 @@ export const STRINGS: Record<Lang, Strings> = {
     timerLength: 'Durée',
     again: 'ENCORE',
     supportKoFi: 'Soutiens-moi sur Ko-fi',
+    privacyPolicy: 'Politique de confidentialité',
   },
 }
 

@@ -10,6 +10,9 @@ import { fonts, palette, radius, shadow, spacing, type } from '../ui/theme'
 /** The developer's tip jar (kofi spec): opened in the browser, never blocking. */
 const KOFI_URL = 'https://ko-fi.com/stilkin'
 
+/** The app's privacy policy (game-settings spec): same quiet footer treatment. */
+const PRIVACY_URL = 'https://think-fast.pocito.fyi/privacy'
+
 /**
  * Settings (game-settings spec): Kids master switch above the pack toggles,
  * timer on/off with discrete duration chips. State lives in the provider —
@@ -164,16 +167,27 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* support link — the quiet footer (kofi spec): coral cup, dimmed label */}
-        <Pressable
-          accessibilityRole="link"
-          accessibilityLabel={s.supportKoFi}
-          onPress={() => Linking.openURL(KOFI_URL)}
-          style={({ pressed }) => [styles.kofi, pressed && styles.rowPressed]}
-        >
-          <Text style={styles.kofiEmoji}>☕</Text>
-          <Text style={styles.kofiText}>{s.supportKoFi}</Text>
-        </Pressable>
+        {/* footer links (kofi + game-settings specs): support first, then the
+            quieter text-only privacy link — the bottom of the bottom */}
+        <View style={styles.footer}>
+          <Pressable
+            accessibilityRole="link"
+            accessibilityLabel={s.supportKoFi}
+            onPress={() => Linking.openURL(KOFI_URL)}
+            style={({ pressed }) => [styles.footerLink, pressed && styles.rowPressed]}
+          >
+            <Text style={styles.kofiEmoji}>☕</Text>
+            <Text style={styles.footerText}>{s.supportKoFi}</Text>
+          </Pressable>
+          <Pressable
+            accessibilityRole="link"
+            accessibilityLabel={s.privacyPolicy}
+            onPress={() => Linking.openURL(PRIVACY_URL)}
+            style={({ pressed }) => [styles.footerLink, pressed && styles.rowPressed]}
+          >
+            <Text style={styles.footerText}>{s.privacyPolicy}</Text>
+          </Pressable>
+        </View>
       </ScrollView>
     </View>
   )
@@ -311,11 +325,14 @@ const styles = StyleSheet.create({
   pressed: {
     transform: [{ scale: 0.97 }],
   },
-  kofi: {
+  footer: {
+    alignItems: 'center',
+    marginTop: spacing.s,
+  },
+  footerLink: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.s,
-    marginTop: spacing.s,
     paddingVertical: 12,
     paddingHorizontal: spacing.l,
   },
@@ -323,7 +340,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: palette.coral,
   },
-  kofiText: {
+  footerText: {
     fontFamily: fonts.text,
     fontSize: 14,
     color: palette.cream,
