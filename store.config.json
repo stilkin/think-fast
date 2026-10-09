@@ -2,7 +2,7 @@
   "configVersion": 0,
   "apple": {
     "version": "0.1.0",
-    "copyright": "2026 Stilkin",
+    "copyright": "2026 POCITO",
     "release": {
       "automaticRelease": true
     },
@@ -25,7 +25,7 @@
         ],
         "releaseNotes": "First public release — have fun!",
         "promoText": "The party game of quick thinking — spin, name, laugh. No ads, no accounts, fully offline.",
-        "supportUrl": "https://think-fast.pocito.fyi/",
+        "supportUrl": "https://github.com/stilkin/think-fast/issues",
         "privacyPolicyUrl": "https://think-fast.pocito.fyi/privacy"
       }
     },
@@ -58,6 +58,14 @@
       "parentalControls": false,
       "userGeneratedContent": false
     },
-    "categories": [["GAMES", "GAMES_WORD"]]
+    "categories": [["GAMES", "GAMES_WORD"]],
+    "review": {
+      "firstName": "Servaas",
+      "lastName": "Tilkin",
+      "phone": "+32472591567",
+      "email": "servaas.tilkin@gmail.com",
+      "demoRequired": false,
+      "notes": "Simple offline party game: spin a letter wheel, name something in the category. All content is bundled; there is no account, no network use, and no permission the app requests. The support link in Settings opens the developer's Ko-fi page in the browser."
+    }
   }
 }
