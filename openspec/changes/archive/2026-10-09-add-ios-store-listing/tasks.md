@@ -2,10 +2,10 @@
 
 ## 1. Local prep (zero API calls)
 
-- [ ] 1.1 Write `store.config.json` with the EN-US listing per the approved plan (title/subtitle/description/keywords ≤100 chars/URLs/copyright/category/age rating all NONE/review contact servaas.tilkin@gmail.com); verify the EAS Metadata schema accepts it (`eas metadata:push --help` dry validation or schema doc)
-- [ ] 1.2 Write `scripts/gen-store-screens.mjs` and generate the ten screenshots (5 scenes × [iPhone 1179×2556, iPad 2064×2752]); verify exact dimensions and no alpha via `file`
-- [ ] 1.3 Draft `PRIVACY.md` for the user to publish at think-fast.pocito.fyi/privacy; verify it states only true claims (offline, no collection, no permissions)
-- [ ] 1.4 Write `scripts/asc-api.mjs` (ES256 JWT from the user's .p8, paths from `~/Downloads/openapi.oas.json`); verify it loads the spec and renders a valid JWT offline
+- [x] 1.1 Write `store.config.json` with the EN-US listing per the approved plan (title/subtitle/description/keywords ≤100 chars/URLs/copyright/category/age rating all NONE/review contact servaas.tilkin@gmail.com); verify the EAS Metadata schema accepts it (`eas metadata:push --help` dry validation or schema doc) — limits checked programmatically; locale switched to the app's primary en-GB; push validation accepted it (only flagging the then-missing phone)
+- [x] 1.2 Write `scripts/gen-store-screens.mjs` and generate the ten screenshots (5 scenes × [iPhone 1179×2556, iPad 2064×2752]); verify exact dimensions and no alpha via `file` — verified further by DOM probe + pixel-structure analysis after a misleading visual read
+- [x] 1.3 Draft `PRIVACY.md` for the user to publish at think-fast.pocito.fyi/privacy; verify it states only true claims (offline, no collection, no permissions) — published by the user; URL returns 200
+- [x] 1.4 Write `scripts/asc-api.mjs` (ES256 JWT from the user's .p8, paths from `~/Downloads/openapi.oas.json`); verify it loads the spec and renders a valid JWT offline — P1363 self-test passes; spec refusal and acceptance paths proven before any network call
 
 ## 2. App record and binary
 
@@ -20,4 +20,4 @@
 
 ## 4. Submission (user-gated)
 
-- [ ] 4.1 User completes the web-only items (Free pricing, availability default, App Privacy "Data Not Collected", attach build 4 to version 0.1.0) and presses Submit for Review after their own pass; privacy page live at think-fast.pocito.fyi/privacy is a precondition
+- [x] 4.1 User completes the web-only items (Free pricing, availability default, App Privacy "Data Not Collected", attach build 4 to version 0.1.0) and presses Submit for Review after their own pass; privacy page live at think-fast.pocito.fyi/privacy is a precondition — submitted 2026-10-09; API confirms appStoreState WAITING_FOR_REVIEW
