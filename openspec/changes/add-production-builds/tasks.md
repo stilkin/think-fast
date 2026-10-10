@@ -7,7 +7,7 @@
 
 ## 2. Android store release
 
-- [ ] 2.1 Run the Android production build (`pnpm dlx eas-cli build --platform android --profile production --non-interactive --no-wait`) and see it through; verify the artifact is an `.aab` with a URL
+- [x] 2.1 Run the Android production build (`pnpm dlx eas-cli build --platform android --profile production --non-interactive --no-wait`) and see it through; verify the artifact is an `.aab` with a URL — first attempt (ce0e443c) wedged IN_QUEUE across the account transfer and is un-cancelable via API (ignorable); requeued build 9e2cfcb3 FINISHED 2026-10-10 with an .aab artifact URL
 - [ ] 2.2 Verify the AAB's manifest requests no permissions (e.g. `aapt2 dump permissions` or bundletool inspect via the Android SDK, or the Play Console's uploaded-artifact warning as fallback)
 - [ ] 2.3 User uploads the AAB to the Play Console internal testing track and installs it on a device; sounds and the core loop verified on the store build (design D4 rollback gate)
 

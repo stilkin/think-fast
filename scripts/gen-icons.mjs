@@ -38,10 +38,12 @@ const TARGETS = [
   ['android-icon-foreground.png', 'adaptive-foreground.svg', 1024, 1024, true],
   ['android-icon-monochrome.png', 'monochrome.svg', 1024, 1024, true],
   ['splash-icon.png', 'splash-wordmark.svg', 1280, 512, true],
+  ['feature-graphic.png', 'feature-graphic.svg', 1024, 500, false],
 ]
 
 const TYPES = { '.ttf': 'font/ttf' }
 const TITAN = fontFile('titan-one')
+const FREDOKA = readdirSync(FONTS).find((f) => f.startsWith('fredoka') && f.includes('-500'))
 const shells = new Map()
 for (const [, src, w, h] of TARGETS) {
   const svg = readFileSync(join(SOURCES, src), 'utf8')
@@ -49,6 +51,7 @@ for (const [, src, w, h] of TARGETS) {
     `${src}@${w}x${h}`,
     `<!doctype html><meta charset="utf-8"><style>
 @font-face{font-family:TitanOne;src:url('/fonts/${TITAN}')}
+@font-face{font-family:Fredoka;src:url('/fonts/${FREDOKA}')}
 html,body{margin:0;padding:0;overflow:hidden}
 svg{display:block;width:${w}px;height:${h}px}
 </style>${svg}`,
@@ -96,4 +99,4 @@ for (const [out, src, w, h, transparent] of TARGETS) {
 await browser.close()
 server.close()
 if (failed) process.exit(1)
-console.log('done: 6 assets in assets/images/')
+console.log(`done: ${TARGETS.length} assets in assets/images/`)
