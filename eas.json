@@ -15,6 +15,9 @@
   },
   "submit": {
     "production": {
+      "android": {
+        "serviceAccountKeyPath": "/home/srt/.config/think-fast/play/service-account.json"
+      },
       "ios": {
         "ascAppId": "6820671311",
         "appleTeamId": "8P567HD464",
