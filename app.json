@@ -40,7 +40,8 @@
       ],
       "expo-audio",
       "expo-font",
-      "expo-asset"
+      "expo-asset",
+      "./plugins/strip-android-permissions"
     ],
     "experiments": {
       "typedRoutes": true,

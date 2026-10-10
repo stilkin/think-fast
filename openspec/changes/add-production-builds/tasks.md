@@ -8,7 +8,8 @@
 ## 2. Android store release
 
 - [x] 2.1 Run the Android production build (`pnpm dlx eas-cli build --platform android --profile production --non-interactive --no-wait`) and see it through; verify the artifact is an `.aab` with a URL — first attempt (ce0e443c) wedged IN_QUEUE across the account transfer and is un-cancelable via API (ignorable); requeued build 9e2cfcb3 FINISHED 2026-10-10 with an .aab artifact URL
-- [ ] 2.2 Verify the AAB's manifest requests no permissions (e.g. `aapt2 dump permissions` or bundletool inspect via the Android SDK, or the Play Console's uploaded-artifact warning as fallback)
+- [ ] 2.2 Verify the AAB's manifest requests no permissions (e.g. `aapt2 dump permissions` or bundletool inspect via the Android SDK, or the Play Console's uploaded-artifact warning as fallback) — build 9e2cfcb3 checked 2026-10-10 with bundletool (`dump manifest`): FAILED, 11 permissions incl. RECORD_AUDIO, SYSTEM_ALERT_WINDOW, FOREGROUND_SERVICE_MEDIA_PLAYBACK — library-merged (expo-audio et al.); `android.permissions: []` only clears template defaults. Fix in 2.4, then re-verify here
+- [ ] 2.4 Strip library-merged permissions: `plugins/strip-android-permissions.js` config plugin empties the merged `<uses-permission>` list (keeping the app's own DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION), wired into app.json; rebuild production AAB and re-run the bundletool check — expects the manifest to show only the receiver permission
 - [ ] 2.3 User uploads the AAB to the Play Console internal testing track and installs it on a device; sounds and the core loop verified on the store build (design D4 rollback gate)
 
 ## 3. iOS store release
