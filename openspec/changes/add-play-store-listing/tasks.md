@@ -17,4 +17,4 @@
 
 ## 4. Wrap-up
 
-- [ ] 4.1 `pnpm lint`/`typecheck` clean (scripts only — no app code changed); commit
+- [x] 4.1 `pnpm lint`/`typecheck` clean (scripts only — no app code changed); commit — e35396f, pushed

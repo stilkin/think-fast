@@ -9,7 +9,7 @@
   "listings": {
     "en-GB": {
       "title": "Think Fast!",
-      "shortDescription": "Party game of quick thinking — spin, name, laugh. No ads, no accounts, offline.",
+      "shortDescription": "Party game of quick thinking — spin, name, laugh.",
       "fullDescription": "Think Fast! is the digital version of the classic parlour game Pim Pam Pet — perfect for parties, family evenings, or any table with friends around it.\n\nSpin the letter wheel, read the category, and name something that fits before anybody else does. Stuck? Spin again. Done? Next category. That's the whole game — no setup, no accounts, no waiting.\n\n• Plays in English, Dutch, German, and French\n• Hundreds of categories across three packs, from everyday to themed\n• Kids mode: a safe, easy set for the youngest players\n• Optional round timer: 10, 20, or 30 seconds of pressure\n• Letters and categories never repeat until the set is used up\n• Fully offline — no ads, no tracking, nothing to sign up for\n\nOne phone, one wheel, endless arguments about whether \"xylophone\" counts."
     }
   },
@@ -17,7 +17,6 @@
     "phoneScreenshots": [
       "assets/store-listing/ios/iphone-01-language.png",
       "assets/store-listing/ios/iphone-02-round.png",
-      "assets/store-listing/ios/iphone-03-spinning.png",
       "assets/store-listing/ios/iphone-04-landed.png",
       "assets/store-listing/ios/iphone-05-settings.png"
     ],

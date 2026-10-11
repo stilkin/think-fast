@@ -112,11 +112,14 @@ First uploads:
 - **Google Play**: `eas submit` uploads the `.aab` with a Google service-account
   key (Console → Setup → API access; see
   [Expo's guide](https://github.com/expo/fyi/blob/main/creating-google-service-account.md)).
-  The key path is wired in `eas.json` (`android.serviceAccountKeyPath`); the
-  `track` (internal / closed / production) is chosen per release:
+  Key path and track live in `eas.json` (`android.serviceAccountKeyPath`,
+  `android.track`; `beta` = open testing). The first release goes up as a
+  **draft** (`android.releaseStatus: "draft"` — Play requires a human to start
+  a new app's first release in the Console) and the store listing must already
+  be complete:
 
   ```bash
-  pnpm dlx eas-cli submit --platform android --latest --track internal
+  pnpm dlx eas-cli submit --platform android --latest --profile production
   ```
 - **App Store**: from a Linux box, upload via `eas submit` with an App Store
   Connect API key (Transporter, the alternative uploader, is macOS-only):
